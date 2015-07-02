@@ -9,7 +9,7 @@ class centrify::install {
     name   => $::centrify::dc_package_name,
   }
 
-  package { 'centrifydc-openssh':
+  package { 'centrifydc_openssh':
     ensure => present,
     name   => $::centrify::sshd_package_name,
   }
