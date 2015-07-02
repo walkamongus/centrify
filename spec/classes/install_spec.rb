@@ -8,28 +8,22 @@ describe 'centrify' do
           facts
         end
 
-        context "centrify class without any parameters" do
+        context "centrify class with default parameters" do
           let(:params) {{ }}
 
           it { is_expected.to compile.with_all_deps }
 
           it { is_expected.to contain_class('centrify::install') }
-          it { is_expected.to contain_package('centrifydc') }
-          it { is_expected.to contain_package('centrify-openssh') }
-
+          case facts[:osfamily]
+            when 'Debian'
+              it { is_expected.to contain_package('centrifydc').with_name('centrifydc') }
+              it { is_expected.to contain_package('centrifydc-openssh').with_name('centrifydc-openssh') }
+            when 'RedHat', 'Amazon'
+              it { is_expected.to contain_package('centrifydc').with_name('CentrifyDC') }
+              it { is_expected.to contain_package('centrifydc-openssh').with_name('CentrifyDC-openssh') }
+          end
         end
       end
-    end
-  end
-
-  context 'unsupported operating system' do
-    describe 'centrify class without any parameters on Solaris/Nexenta' do
-      let(:facts) {{
-        :osfamily        => 'Solaris',
-        :operatingsystem => 'Nexenta',
-      }}
-
-      it { expect { is_expected.to contain_package('centrify') }.to raise_error(Puppet::Error, /Nexenta not supported/) }
     end
   end
 end
