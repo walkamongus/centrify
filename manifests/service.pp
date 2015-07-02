@@ -5,15 +5,17 @@
 #
 class centrify::service {
 
-  service { $::centrify::dc_service_name:
+  service { 'centrifydc':
     ensure     => running,
+    name       =>  $::centrify::dc_service_name,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
   }
 
-  service { $::centrify::ssh_service_name:
+  service { 'centrify-sshd':
     ensure     => running,
+    name       =>  $::centrify::sshd_service_name,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
