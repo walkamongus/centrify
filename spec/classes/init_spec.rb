@@ -8,11 +8,12 @@ describe 'centrify' do
           facts
         end
 
-        context "centrify class without any parameters" do
+        context "::centrify class without any parameters" do
           let(:params) {{ }}
 
           it { is_expected.to compile.with_all_deps }
 
+          it { is_expected.to contain_class('centrify') }
           it { is_expected.to contain_class('centrify::params') }
           it { is_expected.to contain_class('centrify::install').that_comes_before('centrify::config') }
           it { is_expected.to contain_class('centrify::config') }

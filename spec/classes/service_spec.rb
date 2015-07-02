@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'centrify', :type => :class do
+describe 'centrify' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
