@@ -23,5 +23,11 @@ class centrify::params {
   $sshd_service_name = 'centrify-sshd'
   $dc_config_file    = '/etc/centrifydc/centrifydc.conf'
   $sshd_config_file  = '/etc/centrifydc/ssh/sshd_config'
+  $domain            = undef
+  $join_user         = undef
+  $join_password     = undef
+  $krb_ticket_join   = false
+  $krb_keytab        = undef
+  $krb_config_file   = undef
 
 }

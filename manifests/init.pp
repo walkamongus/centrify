@@ -14,12 +14,19 @@ class centrify (
   $sshd_service_name = $::centrify::params::sshd_service_name,
   $dc_config_file    = $::centrify::params::dc_config_file,
   $sshd_config_file  = $::centrify::params::sshd_config_file,
+  $domain            = $::centrify::params::domain,
+  $join_user         = $::centrify::params::join_user,
+  $join_password     = $::centrify::params::join_password,
+  $krb_ticket_join   = $::centrify::params::krb_ticket_join,
+  $krb_keytab        = $::centrify::params::krb_keytab,
+  $krb_config_file   = $::centrify::params::krb_config_file,
 ) inherits ::centrify::params {
 
   # validate parameters here
 
   class { '::centrify::install': } ->
   class { '::centrify::config': } ~>
+  class { '::centrify::join': } ~>
   class { '::centrify::service': } ->
   Class['::centrify']
 }
