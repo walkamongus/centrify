@@ -16,6 +16,7 @@ group :development do
   gem "vagrant-wrapper"
   gem "puppet-blacksmith"
   gem "guard-rake"
+  gem "rb-readline"
 end
 
 group :system_tests do
