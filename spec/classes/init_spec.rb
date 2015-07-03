@@ -17,7 +17,8 @@ describe 'centrify' do
           it { is_expected.to contain_class('centrify::params') }
           it { is_expected.to contain_class('centrify::install').that_comes_before('centrify::config') }
           it { is_expected.to contain_class('centrify::config') }
-          it { is_expected.to contain_class('centrify::service').that_subscribes_to('centrify::config') }
+          it { is_expected.to contain_class('centrify::join').that_subscribes_to('centrify::config') }
+          it { is_expected.to contain_class('centrify::service').that_subscribes_to('centrify::join') }
         end
       end
     end
