@@ -15,12 +15,32 @@ describe 'centrify' do
 
           it { is_expected.to contain_class('centrify::install') }
           case facts[:osfamily]
-            when 'Debian'
-              it { is_expected.to contain_package('centrifydc').with_name('centrifydc') }
-              it { is_expected.to contain_package('centrifydc_openssh').with_name('centrifydc-openssh') }
-            when 'RedHat', 'Amazon'
-              it { is_expected.to contain_package('centrifydc').with_name('CentrifyDC') }
-              it { is_expected.to contain_package('centrifydc_openssh').with_name('CentrifyDC-openssh') }
+          when 'Debian'
+            it do 
+              is_expected.to contain_package('centrifydc').with({
+                'name'   => 'centrifydc',
+                'ensure' => 'present',
+              })
+            end
+            it do
+              is_expected.to contain_package('centrifydc_openssh').with({
+                'name'   => 'centrifydc-openssh',
+                'ensure' => 'present',
+              })
+            end
+          when 'RedHat', 'Amazon'
+            it do 
+              is_expected.to contain_package('centrifydc').with({
+                'name'   => 'CentrifyDC',
+                'ensure' => 'present',
+              })
+            end
+            it do
+              is_expected.to contain_package('centrifydc_openssh').with({
+                'name'   => 'CentrifyDC-openssh',
+                'ensure' => 'present',
+              })
+            end
           end
         end
       end

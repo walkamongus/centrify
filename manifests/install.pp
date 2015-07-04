@@ -5,12 +5,12 @@
 class centrify::install {
 
   package { 'centrifydc':
-    ensure => present,
+    ensure => $::centrify::dc_package_ensure,
     name   => $::centrify::dc_package_name,
   }
 
   package { 'centrifydc_openssh':
-    ensure => present,
+    ensure => $::centrify::sshd_package_ensure,
     name   => $::centrify::sshd_package_name,
   }
 
