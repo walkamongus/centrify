@@ -5,18 +5,15 @@
 #
 class centrify::adjoin::keytab {
 
-  # adkeytab -A -K /var/tmp/join_keytab.keytab joiner
-  #Administrator@CENTRIFYIMAGE.VMS's password:
-
-  $domain = $::centrify::domain
-  $user   = $::centrify::join_user
-  $keytab = $::centrify::krb_keytab
+  $_domain = $::centrify::domain
+  $_join_user   = $::centrify::join_user
+  $_krb_keytab = $::centrify::krb_keytab
 
   file { 'krb_keytab':
-    path   => $keytab,
+    path   => $_krb_keytab,
     owner  => 'root',
     group  => 'root',
-    mode   => '0600',
+    mode   => '0400',
     before => Exec['run_kinit_with_keytab'],
   }
 
@@ -33,12 +30,12 @@ class centrify::adjoin::keytab {
 
   exec { 'run_kinit_with_keytab':
     path    => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
-    command => "kinit -kt ${keytab} ${user}",
+    command => "kinit -kt ${_krb_keytab} ${_join_user}",
   }->
   exec { 'run_adjoin_with_keytab':
     path        => '/usr/bin:/usr/sbin:/bin',
-    command     => "adjoin --force -w ${domain}",
-    unless      => "adinfo -d | grep ${domain}",
+    command     => "adjoin --force -w ${_domain}",
+    unless      => "adinfo -d | grep ${_domain}",
     refreshonly => true,
   }
 
