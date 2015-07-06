@@ -10,11 +10,25 @@ describe 'centrify' do
 
         context "centrify::adjoin::keytab class" do
           let(:params) {{ 
-            :krb_ticket_join => 'true',
-            :join_user       => 'user',
-            :krb_keytab      => '/tmp/join.keytab',
-            :krb_config_file => '/etc/krb5.conf',
-            :domain          => 'example.com',
+            :krb_ticket_join        => 'true',
+            :join_user              => 'user',
+            :krb_keytab             => '/tmp/join.keytab',
+            :krb_config_file        => '/etc/krb5.conf',
+            :domain                 => 'example.com',
+            :manage_krb_config_file => 'true',
+            :krb_config             => {
+              'libdefaults' => {
+                'default_realm' => 'EXAMPLE.COM',
+              },
+              'domain_realm' => {
+                'localhost.example.com' => 'EXAMPLE.COM',
+              },
+              'realms' => {
+                'EXAMPLE.COM' => {
+                  'kdc' => 'dc.example.com:88',
+                },
+              },
+            }
           }}
 
           it { is_expected.to contain_class('centrify::adjoin::keytab') }
@@ -25,7 +39,7 @@ describe 'centrify' do
               'owner' => 'root',
               'group' => 'root',
               'mode'  => '0600',
-            }).that_comes_before('File[krb_configuration]')
+            }).that_comes_before('Exec[run_kinit_with_keytab]')
           end
 
           it do
@@ -36,6 +50,18 @@ describe 'centrify' do
               'mode'  => '0644',
             }).that_comes_before('Exec[run_kinit_with_keytab]')
           end
+
+          it { should contain_file('krb_configuration').with_content(
+            /\[domain_realm\]\nlocalhost.example.com = EXAMPLE.COM\n/
+          )}
+
+          it { should contain_file('krb_configuration').with_content(
+            /\[libdefaults\]\ndefault_realm = EXAMPLE.COM\n/
+          )}
+
+          it { should contain_file('krb_configuration').with_content(
+            /\[realms\]\nEXAMPLE.COM = {\n  kdc = dc.example.com:88\n/
+          )}
 
           it do
             is_expected.to contain_exec('run_kinit_with_keytab').with({
