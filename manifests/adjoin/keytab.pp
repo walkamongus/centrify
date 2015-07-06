@@ -20,7 +20,7 @@ class centrify::adjoin::keytab {
     before => Exec['run_kinit_with_keytab'],
   }
 
-  if $::centrify::manage_krb_config_file {
+  if $::centrify::manage_krb_config {
     file { 'krb_configuration':
       path    => $::centrify::krb_config_file,
       owner   => 'root',
