@@ -13,17 +13,24 @@ class centrify::adjoin::keytab {
   $keytab = $::centrify::krb_keytab
 
   file { 'krb_keytab':
-    path  => $keytab,
-    owner => 'root',
-    group => 'root',
-    mode  => '0600',
-  }->
-  file { 'krb_configuration':
-    path  => $::centrify::krb_config_file,
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }->
+    path   => $keytab,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0600',
+    before => Exec['run_kinit_with_keytab'],
+  }
+
+  if $::centrify::manage_krb_config_file {
+    file { 'krb_configuration':
+      path    => $::centrify::krb_config_file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('centrify/krb5.conf.erb'),
+      before  => Exec['run_kinit_with_keytab'],
+    }
+  }
+
   exec { 'run_kinit_with_keytab':
     path    => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
     command => "kinit -kt ${keytab} ${user}",
