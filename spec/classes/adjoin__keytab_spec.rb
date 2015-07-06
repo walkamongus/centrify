@@ -38,7 +38,7 @@ describe 'centrify' do
               'path'  => '/tmp/join.keytab',
               'owner' => 'root',
               'group' => 'root',
-              'mode'  => '0600',
+              'mode'  => '0400',
             }).that_comes_before('Exec[run_kinit_with_keytab]')
           end
 
