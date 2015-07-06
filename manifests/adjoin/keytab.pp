@@ -5,8 +5,8 @@
 #
 class centrify::adjoin::keytab {
 
-  $_domain = $::centrify::domain
-  $_join_user   = $::centrify::join_user
+  $_domain     = $::centrify::domain
+  $_join_user  = $::centrify::join_user
   $_krb_keytab = $::centrify::krb_keytab
 
   file { 'krb_keytab':
@@ -29,13 +29,19 @@ class centrify::adjoin::keytab {
   }
 
   exec { 'run_kinit_with_keytab':
-    path    => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
-    command => "kinit -kt ${_krb_keytab} ${_join_user}",
+    path        => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
+    command     => "kinit -kt ${_krb_keytab} ${_join_user}",
+    refreshonly => true,
   }->
   exec { 'run_adjoin_with_keytab':
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => "adjoin --force -w ${_domain}",
     unless      => "adinfo -d | grep ${_domain}",
+    refreshonly => true,
+  }->
+  exec { 'run_adflush_and_adreload':
+    path        => '/usr/bin:/usr/sbin:/bin',
+    command     => 'adflush && adreload',
     refreshonly => true,
   }
 
