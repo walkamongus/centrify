@@ -1,11 +1,9 @@
 require 'puppet/provider/parsedfile'
 
-target = '/etc/centrifydc/centrifydc.conf'
-
 Puppet::Type.type(:centrifydc_line).provide(
   :parsed,
   :parent => Puppet::Provider::ParsedFile,
-  :default_target => target,
+  :default_target => '/etc/centrifydc/centrifydc.conf',
   :filetype => :flat
 ) do
   desc 'The centrifydc_line provider that uses the ParsedFile class'
@@ -14,5 +12,14 @@ Puppet::Type.type(:centrifydc_line).provide(
 
   text_line :blank, :match => /^\s*$/
 
-  record_line :parsed, :fields => %w{setting value}, :separator => /\s*:\s+/
+  record_line :parsed,
+    :fields => %w{setting value},
+    :match => /^\s*([\w\.:]+): (.+)$/,
+    :separator => ': ',
+    :to_line  => proc { |h| 
+      str = h[:setting]
+      str += ': '
+      str += h[:value]
+      str
+    }
 end
