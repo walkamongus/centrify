@@ -28,6 +28,10 @@ class centrify::config {
       group   => 'root',
       mode    => '0644',
       content => inline_template('<% @allow_users.sort.each { |user|%><%= user %>\n<% } %>'),
+    }->
+    centrifydc_line {'pam.allow.users':
+      ensure => present,
+      value  => "file:${::centrify::allow_users_file}",
     }
   }
 
@@ -39,6 +43,10 @@ class centrify::config {
       group   => 'root',
       mode    => '0644',
       content => inline_template('<% @allow_groups.sort.each { |group|%><%= group %>\n<% } %>'),
+    }->
+    centrifydc_line {'pam.allow.groups':
+      ensure => present,
+      value  => "file:${::centrify::allow_groups_file}",
     }
   }
 
@@ -50,6 +58,10 @@ class centrify::config {
       group   => 'root',
       mode    => '0644',
       content => inline_template('<% @deny_users.sort.each { |user|%><%= user %>\n<% } %>'),
+    }->
+    centrifydc_line {'pam.deny.users':
+      ensure => present,
+      value  => "file:${::centrify::deny_users_file}",
     }
   }
 
@@ -61,6 +73,10 @@ class centrify::config {
       group   => 'root',
       mode    => '0644',
       content => inline_template('<% @deny_groups.sort.each { |group|%><%= group %>\n<% } %>'),
+    }->
+    centrifydc_line {'pam.deny.groups':
+      ensure => present,
+      value  => "file:${::centrify::deny_groups_file}",
     }
   }
 
