@@ -20,4 +20,48 @@ class centrify::config {
     mode   => '0600',
   }
 
+  if $::centrify::allow_users {
+    file { 'allow_users_file':
+      ensure  => present,
+      path    => $::centrify::allow_users_file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => inline_template('<% @allow_users.sort.each { |user|%><%= user %>\n<% } %>'),
+    }
+  }
+
+  if $::centrify::allow_groups {
+    file { 'allow_groups_file':
+      ensure  => present,
+      path    => $::centrify::allow_groups_file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => inline_template('<% @allow_groups.sort.each { |group|%><%= group %>\n<% } %>'),
+    }
+  }
+
+  if $::centrify::deny_users {
+    file { 'deny_users_file':
+      ensure  => present,
+      path    => $::centrify::deny_users_file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => inline_template('<% @deny_users.sort.each { |user|%><%= user %>\n<% } %>'),
+    }
+  }
+
+  if $::centrify::deny_groups {
+    file { 'deny_groups_file':
+      ensure  => present,
+      path    => $::centrify::deny_groups_file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => inline_template('<% @deny_groups.sort.each { |group|%><%= group %>\n<% } %>'),
+    }
+  }
+
 }
