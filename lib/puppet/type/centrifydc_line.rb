@@ -13,7 +13,7 @@ Puppet::Type.newtype(:centrifydc_line) do
 
   newproperty(:value) do
     desc 'The value for the configuration setting'
-    newvalues(/^[\.\w]+:?[\.\w]*$/)
+    newvalues(/^[\.\w]+:?[\.\w\/]*$/)
   end
 
   newproperty(:target) do
