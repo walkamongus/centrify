@@ -25,6 +25,7 @@ class centrify::params {
   $sshd_service_name     = 'centrify-sshd'
   $dc_config_file        = '/etc/centrifydc/centrifydc.conf'
   $sshd_config_file      = '/etc/centrifydc/ssh/sshd_config'
+  $krb_config_file       = '/etc/krb5.conf'
   $allow_users_file      = '/etc/centrifydc/users.allow'
   $deny_users_file       = '/etc/centrifydc/users.deny'
   $allow_groups_file     = '/etc/centrifydc/groups.allow'
@@ -39,7 +40,6 @@ class centrify::params {
   $krb_ticket_join       = false
   $krb_keytab            = undef
   $manage_krb_config     = false
-  $krb_config_file       = undef
   $krb_config            = {}
   $extra_centrify_config = {}
 
