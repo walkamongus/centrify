@@ -10,11 +10,9 @@ Puppet::Type.type(:centrifydc_line).provide(
 ) do
   desc 'The centrifydc_line provider that uses the ParsedFile class'
   
-  text_line :comment, :match => /^\s*#/;
+  text_line :comment, :match => /^\s*#/
 
-  text_line :blank, :match => /^\s*$/;
+  text_line :blank, :match => /^\s*$/
 
-  record_line :parsed,
-    :fields => %w{setting value},
-    :separator => /\s*:\s*/
+  record_line :parsed, :fields => %w{setting value}, :separator => /\s*:\s+/
 end
