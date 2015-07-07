@@ -4,6 +4,11 @@
 #
 class centrify::config {
 
+  $allow_users  = $::centrify::allow_users
+  $allow_groups = $::centrify::allow_groups
+  $deny_users   = $::centrify::deny_users
+  $deny_groups  = $::centrify::deny_groups
+
   file { 'centrifydc_config':
     ensure => present,
     path   => $::centrify::dc_config_file,
@@ -20,7 +25,7 @@ class centrify::config {
     mode   => '0600',
   }
 
-  if $::centrify::allow_users {
+  if $allow_users {
     file { 'allow_users_file':
       ensure  => present,
       path    => $::centrify::allow_users_file,
@@ -35,7 +40,7 @@ class centrify::config {
     }
   }
 
-  if $::centrify::allow_groups {
+  if $allow_groups {
     file { 'allow_groups_file':
       ensure  => present,
       path    => $::centrify::allow_groups_file,
@@ -50,7 +55,7 @@ class centrify::config {
     }
   }
 
-  if $::centrify::deny_users {
+  if $deny_users {
     file { 'deny_users_file':
       ensure  => present,
       path    => $::centrify::deny_users_file,
@@ -65,7 +70,7 @@ class centrify::config {
     }
   }
 
-  if $::centrify::deny_groups {
+  if $deny_groups {
     file { 'deny_groups_file':
       ensure  => present,
       path    => $::centrify::deny_groups_file,
