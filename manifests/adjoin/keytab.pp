@@ -8,6 +8,7 @@ class centrify::adjoin::keytab {
   $_domain     = $::centrify::domain
   $_join_user  = $::centrify::join_user
   $_krb_keytab = $::centrify::krb_keytab
+  $_krb_config = $::centrify::krb_config
 
   file { 'krb_keytab':
     path   => $_krb_keytab,
