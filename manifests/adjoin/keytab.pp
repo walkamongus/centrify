@@ -20,6 +20,8 @@ class centrify::adjoin::keytab {
 
   if $::centrify::manage_krb_config {
     file { 'krb_configuration':
+      ensure  => present,
+      replace => false,
       path    => $::centrify::krb_config_file,
       owner   => 'root',
       group   => 'root',
