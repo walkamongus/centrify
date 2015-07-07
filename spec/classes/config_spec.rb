@@ -49,6 +49,13 @@ describe 'centrify' do
             })
           end
 
+          it do 
+            is_expected.to contain_centrifydc_line('pam.allow.users').with({
+              'ensure' => 'present',
+              'value'  => 'file:/etc/centrifydc/users.allow'
+            })
+          end
+
           it { is_expected.to contain_file('allow_users_file').with_content(
             /good_user1\\ngood_user2/
           ) }
@@ -60,6 +67,13 @@ describe 'centrify' do
               'owner'  => 'root',
               'group'  => 'root',
               'mode'   => '0644',
+            })
+          end
+
+          it do 
+            is_expected.to contain_centrifydc_line('pam.allow.groups').with({
+              'ensure' => 'present',
+              'value'  => 'file:/etc/centrifydc/groups.allow'
             })
           end
 
@@ -77,6 +91,13 @@ describe 'centrify' do
             })
           end
 
+          it do 
+            is_expected.to contain_centrifydc_line('pam.deny.users').with({
+              'ensure' => 'present',
+              'value'  => 'file:/etc/centrifydc/users.deny'
+            })
+          end
+
           it { is_expected.to contain_file('deny_users_file').with_content(
             /bad_user/
           ) }
@@ -88,6 +109,13 @@ describe 'centrify' do
               'owner'  => 'root',
               'group'  => 'root',
               'mode'   => '0644',
+            })
+          end
+
+          it do 
+            is_expected.to contain_centrifydc_line('pam.deny.groups').with({
+              'ensure' => 'present',
+              'value'  => 'file:/etc/centrifydc/groups.deny'
             })
           end
 
