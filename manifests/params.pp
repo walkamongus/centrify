@@ -19,19 +19,28 @@ class centrify::params {
     }
   }
 
-  $dc_package_ensure   = 'present'
-  $sshd_package_ensure = 'present'
-  $dc_service_name     = 'centrifydc'
-  $sshd_service_name   = 'centrify-sshd'
-  $dc_config_file      = '/etc/centrifydc/centrifydc.conf'
-  $sshd_config_file    = '/etc/centrifydc/ssh/sshd_config'
-  $domain              = undef
-  $join_user           = undef
-  $join_password       = undef
-  $krb_ticket_join     = false
-  $krb_keytab          = undef
-  $manage_krb_config   = false
-  $krb_config_file     = undef
-  $krb_config          = {}
+  $dc_package_ensure     = 'present'
+  $sshd_package_ensure   = 'present'
+  $dc_service_name       = 'centrifydc'
+  $sshd_service_name     = 'centrify-sshd'
+  $dc_config_file        = '/etc/centrifydc/centrifydc.conf'
+  $sshd_config_file      = '/etc/centrifydc/ssh/sshd_config'
+  $allow_users_file      = '/etc/centrifydc/users.allow'
+  $deny_users_file       = '/etc/centrifydc/users.deny'
+  $allow_groups_file     = '/etc/centrifydc/groups.allow'
+  $deny_groups_file      = '/etc/centrifydc/groups.deny'
+  $allow_users           = undef
+  $deny_users            = undef
+  $allow_groups          = undef
+  $deny_groups           = undef
+  $domain                = undef
+  $join_user             = undef
+  $join_password         = undef
+  $krb_ticket_join       = false
+  $krb_keytab            = undef
+  $manage_krb_config     = false
+  $krb_config_file       = undef
+  $krb_config            = {}
+  $extra_centrify_config = {}
 
 }
