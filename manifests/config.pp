@@ -32,7 +32,7 @@ class centrify::config {
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => inline_template('<% @_allow_users.sort.each { |user|%><%= user %>\n<% } %>'),
+      content => inline_template('<% @_allow_users.sort.each { |user|%><%= user %><% } %>'),
     }->
     centrifydc_line {'pam.allow.users':
       ensure => present,
@@ -47,7 +47,7 @@ class centrify::config {
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => inline_template('<% @_allow_groups.sort.each { |group|%><%= group %>\n<% } %>'),
+      content => inline_template('<% @_allow_groups.sort.each { |group|%><%= group %><% } %>'),
     }->
     centrifydc_line {'pam.allow.groups':
       ensure => present,
@@ -62,7 +62,7 @@ class centrify::config {
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => inline_template('<% @_deny_users.sort.each { |user|%><%= user %>\n<% } %>'),
+      content => inline_template('<% @_deny_users.sort.each { |user|%><%= user %><% } %>'),
     }->
     centrifydc_line {'pam.deny.users':
       ensure => present,
@@ -77,7 +77,7 @@ class centrify::config {
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => inline_template('<% @_deny_groups.sort.each { |group|%><%= group %>\n<% } %>'),
+      content => inline_template('<% @_deny_groups.sort.each { |group|%><%= group %><% } %>'),
     }->
     centrifydc_line {'pam.deny.groups':
       ensure => present,
