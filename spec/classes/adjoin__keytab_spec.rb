@@ -10,20 +10,20 @@ describe 'centrify' do
 
         context "centrify::adjoin::keytab class" do
           let(:params) {{ 
-            :krb_ticket_join   => 'true',
-            :join_user         => 'user',
-            :krb_keytab        => '/tmp/join.keytab',
-            :krb_config_file   => '/etc/krb5.conf',
-            :domain            => 'example.com',
-            :manage_krb_config => 'true',
-            :krb_config        => {
-              'libdefaults' => {
+            :krb_ticket_join       => 'true',
+            :join_user             => 'user',
+            :krb_keytab            => '/tmp/join.keytab',
+            :krb_config_file       => '/etc/krb5.conf',
+            :domain                => 'example.com',
+            :initialize_krb_config => 'true',
+            :krb_config            => {
+              'libdefaults'  => {
                 'default_realm' => 'EXAMPLE.COM',
               },
               'domain_realm' => {
                 'localhost.example.com' => 'EXAMPLE.COM',
               },
-              'realms' => {
+              'realms'       => {
                 'EXAMPLE.COM' => {
                   'kdc' => 'dc.example.com:88',
                 },

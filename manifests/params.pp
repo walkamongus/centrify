@@ -39,8 +39,7 @@ class centrify::params {
   $join_password         = undef
   $krb_ticket_join       = false
   $krb_keytab            = undef
-  $manage_krb_config     = false
+  $initialize_krb_config = false
   $krb_config            = {}
-  $extra_centrify_config = {}
 
 }

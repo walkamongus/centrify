@@ -18,7 +18,7 @@ class centrify::adjoin::keytab {
     before => Exec['run_kinit_with_keytab'],
   }
 
-  if $::centrify::manage_krb_config {
+  if $::centrify::initialize_krb_config {
     file { 'krb_configuration':
       ensure  => present,
       replace => false,
