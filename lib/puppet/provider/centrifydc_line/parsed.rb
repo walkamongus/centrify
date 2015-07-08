@@ -12,7 +12,7 @@ Puppet::Type.type(:centrifydc_line).provide(
   text_line :blank, :match => /^\s*$/
 
   record_line :parsed,
-    :fields => %w{setting value},
+    :fields => %w{name value},
     :separator => ': ',
     :joiner => ': ',
     :rts => true

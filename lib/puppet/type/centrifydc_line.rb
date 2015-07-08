@@ -7,7 +7,7 @@ Puppet::Type.newtype(:centrifydc_line) do
 
   ensurable
 
-  newparam(:setting, :namevar => true) do
+  newparam(:name, :namevar => true) do
     desc 'The configuration setting to manage'
   end
 
