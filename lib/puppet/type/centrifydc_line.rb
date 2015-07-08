@@ -9,11 +9,11 @@ Puppet::Type.newtype(:centrifydc_line) do
 
   newparam(:setting, :namevar => true) do
     desc 'The configuration setting to manage'
-    newvalues(/^[\w\.]+$/)
   end
 
   newproperty(:value) do
     desc 'The value for the configuration setting'
+    newvalues(/^[\w\.:\/]+$/)
   end
 
   newproperty(:target) do
