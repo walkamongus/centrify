@@ -57,7 +57,7 @@ describe 'centrify' do
           end
 
           it { is_expected.to contain_file('allow_users_file').with_content(
-            /good_user1\\ngood_user2/
+            /good_user1\ngood_user2/
           ) }
 
           it do
@@ -120,7 +120,7 @@ describe 'centrify' do
           end
 
           it { is_expected.to contain_file('deny_groups_file').with_content(
-            /bad_group1\\nbad_group2/
+            /bad_group1\nbad_group2/
           ) }
 
         end
