@@ -14,5 +14,5 @@ Puppet::Type.type(:centrifydc_line).provide(
   record_line :parsed,
     :fields => %w{setting value},
     :match => /^\s*([\w\.:]+): (.+)$/,
-    :joiner => ': ',
+    :joiner => ': '
 end
