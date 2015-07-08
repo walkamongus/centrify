@@ -34,11 +34,65 @@ class centrify (
   $krb_config            = $::centrify::params::krb_config,
 ) inherits ::centrify::params {
 
+  if $krb_ticket_join == false {
+    if ($join_user and !$join_password) {
+      fail('Cannot set join_user without join_password')
+    }
+  }
+  if ($join_password and !$join_user) {
+    fail('Cannot set join_password without join_user')
+  }
+  if ($initialize_krb_config and empty($krb_config)) {
+    fail('Cannot set initialize_krb_config without krb_config')
+  }
+
   # validate parameters here
+  if $domain          { validate_string($domain) }
+  if $join_user       { validate_string($join_user) }
+  if $join_password   { validate_string($join_password) }
+  if $allow_users     { validate_array($allow_users) }
+  if $deny_users      { validate_array($deny_users) }
+  if $allow_groups    { validate_array($allow_groups) }
+  if $deny_groups     { validate_array($deny_groups) }
+  if $krb_config      { validate_hash($krb_config) }
+  if $krb_keytab      { validate_absolute_path($krb_keytab) }
+  if $krb_ticket_join { validate_bool($krb_ticket_join) }
+
+  if $initialize_krb_config {
+    validate_bool($initialize_krb_config)
+  }
+
+  validate_string(
+    $dc_package_name,
+    $sshd_package_name,
+    $dc_service_name,
+    $sshd_service_name
+  )
+
+  validate_re(
+    $dc_package_ensure,
+    '^(present|absent)$',
+    "'dc_package_ensure' must be set to either 'present' or 'adsent'."
+  )
+
+  validate_re(
+    $sshd_package_ensure,
+    '^(present|absent)$',
+    "'sshd_package_ensure' must be set to either 'present' or 'adsent'."
+  )
+
+  validate_absolute_path($dc_config_file)
+  validate_absolute_path($sshd_config_file)
+  validate_absolute_path($allow_users_file)
+  validate_absolute_path($deny_users_file)
+  validate_absolute_path($allow_groups_file)
+  validate_absolute_path($deny_groups_file)
+  validate_absolute_path($krb_config_file)
 
   class { '::centrify::install': } ->
   class { '::centrify::config': } ~>
   class { '::centrify::join': } ~>
   class { '::centrify::service': } ->
   Class['::centrify']
+
 }
