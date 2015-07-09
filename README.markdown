@@ -53,7 +53,7 @@ and manage the Centrify DC agent and OpenSSH daemons.
         * the adjoin command is run to join via keytab
     * the adflush and adreload commands are run post-join
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
 * Packages
     * this module assumes that the centrify packages are available via the native package management commands i.e. the packages are available via a repository known to the system
