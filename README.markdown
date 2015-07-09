@@ -24,7 +24,7 @@ This module will install the DC agent and OpenSSH packages, configure their resp
 * Username and password
 * Kerberos keytab file
 
-and manage the Centrify DC agent and OpenSSH daemons.
+It also manages the Centrify DC agent and OpenSSH daemons.
 
 ## Setup
 
@@ -46,12 +46,12 @@ and manage the Centrify DC agent and OpenSSH daemons.
     * centrifydc-sshd
 * Execs
     * for username and password joins
-        * the adjoin command is run with supplied credentials
+        * the `adjoin` command is run with supplied credentials
     * for keytab joins
         * the kerberos config file (/etc/krb5.conf) will be removed if it contains the string 'EXAMPLE.COM' to allow for the module to initialize the proper contents if initialization is requested
-        * the kinit command is run to obtain an initial TGT
-        * the adjoin command is run to join via keytab
-    * the adflush and adreload commands are run post-join
+        * the `kinit` command is run to obtain an initial TGT
+        * the `adjoin` command is run to join via keytab
+    * the `adflush` and `adreload` commands are run post-join
 
 ### Setup Requirements
 
@@ -60,7 +60,7 @@ and manage the Centrify DC agent and OpenSSH daemons.
 * Puppet
     * pluginsync must be enabled
 * Keytabs
-    * this module does not manage keytabs -- the 'krb_keytab' parameter is an absolute path to a keytab deployed outised of this module
+    * this module does not manage keytabs -- the `krb_keytab` parameter is an absolute path to a keytab deployed in some way outside of this module
 
 ### Beginning with centrify
 
@@ -109,7 +109,8 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
     }
 
     centrifydc_line { 'nss.runtime.defaultvalue.var.home':
-      value => '/home',
+      ensure => present,
+      value  => '/home',
     }
 
 ## Reference
@@ -143,6 +144,12 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 
 
 ###Types
+* `centrifydc_line`: Set configuration directives in the centrifydc.conf file:
+
+    centrifydc_line { 'nss.runtime.defaultvalue.var.home':
+      ensure => present,
+      value  => '/home',
+    }
 
 ###Classes
 * centrify::install
@@ -153,7 +160,6 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * centrify::adjoin::password
 * centrify::adjoin::keytab
 
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
 
 ## Limitations
 
