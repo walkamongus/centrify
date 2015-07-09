@@ -19,6 +19,11 @@ class centrify::adjoin::keytab {
   }
 
   if $::centrify::initialize_krb_config {
+    exec {'remove_default_krb_config_file':
+      path    => '/usr/bin:/usr/sbin:/bin',
+      command => "rm -f ${$::centrify::krb_config_file}",
+      onlyif  => "grep EXAMPLE.COM ${::centrify::krb_config_file}",
+    }->
     file { 'krb_configuration':
       ensure  => present,
       replace => false,
