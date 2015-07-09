@@ -13,37 +13,145 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.       
+This module installs and configures the Centrify Express Direct Control Agent and the Centrify-enabled OpenSSH daemon.
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
+Centrify Express is a free  utility for integrating Linux/Unix clients into an Active Directory infrastructure.
 
-If your module has a range of functionality (installation, configuration, management, etc.) this is the time to mention it.
+This module will install the DC agent and OpenSSH packages, configure their respective configuration files, and join and Active Directory domain via one of two methods:
+
+* Username and password
+* Kerberos keytab file
+
+and manage the Centrify DC agent and OpenSSH daemons.
 
 ## Setup
 
 ### What centrify affects
 
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form. 
+* Packages
+    * centrifydc
+    * centrifydc-openssh
+* Files
+    * /etc/centrifydc/centrifydc.conf
+    * /etc/centrifydc/ssh/sshd_config
+    * /etc/krb5.conf (optional initialization)
+    * /etc/centrifydc/users.allow
+    * /etc/centrifydc/users.deny
+    * /etc/centrifydc/groups.allow
+    * /etc/centrifydc/groups.deny
+* Services
+    * centrifydc
+    * centrifydc-sshd
+* Execs
+    * for username and password joins
+        * the adjoin command is run with supplied credentials
+    * for keytab joins
+        * the kerberos config file (/etc/krb5.conf) will be removed if it contains the string 'EXAMPLE.COM' to allow for the module to initialize the proper contents if initialization is requested
+        * the kinit command is run to obtain an initial TGT
+        * the adjoin command is run to join via keytab
+    * the adflush and adreload commands are run post-join
 
 ### Setup Requirements **OPTIONAL**
 
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
+* Packages
+    * this module assumes that the centrify packages are available via the native package management commands i.e. the packages are available via a repository known to the system
+* Puppet
+    * pluginsync must be enabled
+* Keytabs
+    * this module does not manage keytabs -- the 'krb_keytab' parameter is an absolute path to a keytab deployed outised of this module
 
 ### Beginning with centrify
 
-The very basic steps needed for a user to get the module up and running. 
+Set up a basic Centrify Express installation and join an Active Directory domain via username and password:
 
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+    class { '::centrify':
+      domain        => 'example.com',
+      join_user     => 'user',
+      join_password => 'password',
+    }
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
+Set up Centrify Express and join an Active Directory domain via a keytab (initializing a basic krb5.conf file), allow a list of users, and set a configuration directive in the centrifydc.conf file:
+
+    class { '::centrify':
+      join_user             => 'joinuser',
+      domain                => 'example.com',
+      krb_ticket_join       => true,
+      krb_keytab            => '/etc/example.keytab',
+      initialize_krb_config => true,
+      allow_users           => [
+        'user1',
+        'user2',
+      ],
+      krb_config            => {
+        'libdefaults'  => {
+          'dns_lookup_realm' => 'false',
+          'ticket_lifetime'  => '24h',
+          'renew_lifetime'   => '7d',
+          'forwardable'      => 'true',
+          'rdns'             => 'false',
+          'default_realm'    => 'EXAMPLE.COM',
+        },
+        'realms'       => {
+          'EXAMPLE.COM' => {
+            'kdc'          => 'kerberos.example.com',
+            'admin_server' => 'kerberos.example.com',
+          },
+        },
+        'domain_realm' => {
+          '.example.com' => 'EXAMPLE.COM',
+          'example.com'  => 'EXAMPLE.COM',
+        },
+      },
+    }
+
+    centrifydc_line { 'nss.runtime.defaultvalue.var.home':
+      value => '/home',
+    }
 
 ## Reference
+
+###Parameters
+
+* `dc_package_name`: String. Name of the centrifydc package. 
+* `sshd_package_name`: String. Name of the centrifydc-openssh package.
+* `dc_package_ensure`: String. Set to 'present' or 'absent'.
+* `sshd_package_ensure`: String. Set to 'present' or 'absent'.
+* `dc_service_name`: String. Name of the centrifydc service daemon.
+* `sshd_service_name`: String. Name of the centrifydc-sshd service daemon.
+* `dc_config_file`: String. Absolute path to the centrifydc.conf file.
+* `sshd_config_file`: String. Absolute path to the centrify sshd_config file.
+* `krb_config_file`: String. Absolute path to the kerberos krb5.conf file.
+* `allow_users_file`: String. Absolute path to the file listing allowed users.
+* `deny_users_file`: String. Absolute path to the file listing denied users.
+* `allow_groups_file`: String. Absolute path to the file listing allowed groups.
+* `deny_groups_file`: String. Absolute path to the file listing denied groups.
+* `allow_users`: Array. Array of allowed users to be placed in the `allow_users_file`.
+* `deny_users`: Array. Array of denied users to be placed in the `deny_users_file`.
+* `allow_groups`: Array. Array of allowed groups to be placed in the `allow_groups_file`.
+* `deny_groups`: Array. Array of denied groups to be placed in the `denied_groups_file`.
+* `domain`: String. Active Directory domain to join.
+* `join_user`: String. User account used to join the Active Directory domain.
+* `join_password`: String. Password for `join_user` account.
+* `krb_ticket_join`: Boolean. Whether to use a keytab for joining the Active Directory domain.
+* `krb_keytab`: String. Absolute path to the keytab file used to join the domain.
+* `initialize_krb_config`: Boolean. Whether to initialize `krb_config_file` with the contents of `krb_config`.
+* `krb_config`: Hash. Configuration used to initialize `krb_config_file` for performing a keytab join.
+
+
+###Types
+
+###Classes
+* centrify::install
+* centrify::config
+* centrify::params
+* centrify::service
+* centrify::join
+* centrify::adjoin::password
+* centrify::adjoin::keytab
 
 Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
 
@@ -55,6 +163,3 @@ This is where you list OS compatibility, version compatibility, etc.
 
 Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
 
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
