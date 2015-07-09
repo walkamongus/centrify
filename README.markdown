@@ -144,12 +144,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 
 
 ###Types
-* `centrifydc_line`: Set configuration directives in the centrifydc.conf file:
-
-    centrifydc_line { 'nss.runtime.defaultvalue.var.home':
-      ensure => present,
-      value  => '/home',
-    }
+* `centrifydc_line`: Set configuration directives in the centrifydc.conf file.
 
 ###Classes
 * centrify::install
