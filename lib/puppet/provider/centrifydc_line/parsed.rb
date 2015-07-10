@@ -10,6 +10,7 @@ Puppet::Type.type(:centrifydc_line).provide(
   
   text_line :comment, :match => /^\s*#/
   text_line :blank, :match => /^\s*$/
+  text_line :incomplete, :match => /^\s*[^#][^:]*$/
 
   record_line :parsed,
     :fields => %w{name value},
