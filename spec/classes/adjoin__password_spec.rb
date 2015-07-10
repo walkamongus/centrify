@@ -25,6 +25,14 @@ describe 'centrify' do
               'refreshonly' => 'true',
             })
           end
+
+          it do
+            is_expected.to contain_exec('run_adflush_and_adreload').with({
+              'path'        => '/usr/bin:/usr/sbin:/bin',
+              'command'     => 'adflush && adreload',
+              'refreshonly' => 'true',
+            })
+          end
         end
       end
     end

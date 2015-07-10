@@ -43,6 +43,14 @@ describe 'centrify' do
           end
 
           it do
+            is_expected.to contain_exec('remove_default_krb_config_file').with({
+              'path'    => '/usr/bin:/usr/sbin:/bin',
+              'command' => 'rm -f /etc/krb5.conf',
+              'onlyif'  => 'grep EXAMPLE.COM /etc/krb5.conf',
+            }).that_comes_before('File[krb_configuration]')
+          end
+
+          it do
             is_expected.to contain_file('krb_configuration').with({
               'path'  => '/etc/krb5.conf',
               'owner' => 'root',
