@@ -94,4 +94,9 @@ class centrify (
   class { '::centrify::join': } ~>
   class { '::centrify::service': }
 
+  contain '::centrify::install'
+  contain '::centrify::config'
+  contain '::centrify::join'
+  contain '::centrify::service'
+
 }
