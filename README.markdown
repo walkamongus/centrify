@@ -9,7 +9,6 @@
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
 
 ## Overview
 
@@ -158,9 +157,5 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
-
-## Development
-
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
+This module requires Puppet >= 3.4.0 or Puppet Enterprise >= 3.2 due to it's use of the `contain` function.
 
