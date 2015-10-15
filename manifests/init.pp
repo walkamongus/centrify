@@ -92,7 +92,6 @@ class centrify (
   class { '::centrify::install': } ->
   class { '::centrify::config': } ~>
   class { '::centrify::join': } ~>
-  class { '::centrify::service': } ->
-  Class['::centrify']
+  class { '::centrify::service': }
 
 }
