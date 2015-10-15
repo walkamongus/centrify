@@ -72,13 +72,13 @@ class centrify (
   validate_re(
     $dc_package_ensure,
     '^(present|absent)$',
-    "'dc_package_ensure' must be set to either 'present' or 'adsent'."
+    "'dc_package_ensure' must be set to either 'present' or 'absent'."
   )
 
   validate_re(
     $sshd_package_ensure,
     '^(present|absent)$',
-    "'sshd_package_ensure' must be set to either 'present' or 'adsent'."
+    "'sshd_package_ensure' must be set to either 'present' or 'absent'."
   )
 
   validate_absolute_path($dc_config_file)
