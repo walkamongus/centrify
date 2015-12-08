@@ -5,11 +5,9 @@
 class centrify::join {
 
   if $::centrify::krb_ticket_join {
-    class { '::centrify::adjoin::keytab': }
     contain '::centrify::adjoin::keytab'
   }
   elsif !$::centrify::krb_ticket_join {
-    class { '::centrify::adjoin::password': }
     contain '::centrify::adjoin::password'
   }
   else {
