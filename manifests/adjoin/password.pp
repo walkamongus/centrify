@@ -8,18 +8,26 @@ class centrify::adjoin::password {
   $_user     = $::centrify::join_user
   $_password = $::centrify::join_password
   $_domain   = $::centrify::domain
+  $_zone     = $::centrify::zone
 
-  exec { 'adjoin_with_password':
-    path        => '/usr/bin:/usr/sbin:/bin',
-    command     => "adjoin -w -u ${_user} -p ${_password} ${_domain}",
-    unless      => "adinfo -d | grep ${_domain}",
-    refreshonly => true,
-  }->
+  if $_zone!=undef{
+    exec { 'adjoin_with_password':
+      path        => '/usr/bin:/usr/sbin:/bin',
+      command     => "adjoin -V -u \'${_user}\' -p \'${_password}\' -z \'${_zone}\' \'${_domain}\'",
+      unless      => "adinfo -d | grep ${_domain}",
+      notify      => Exec['run_adflush_and_adreload'],
+    }
+  } else{
+    exec { 'adjoin_with_password':
+      path        => '/usr/bin:/usr/sbin:/bin',
+      command     => "adjoin -w -u \'${_user}\' -p \'${_password}\' \'${_domain}\'",
+      unless      => "adinfo -d | grep ${_domain}",
+      notify      => Exec['run_adflush_and_adreload'],
+    }
+  }
   exec { 'run_adflush_and_adreload':
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => 'adflush && adreload',
     refreshonly => true,
   }
-
-
 }
