@@ -11,20 +11,20 @@ class centrify::adjoin::password {
   $_zone     = $::centrify::zone
 
   if $_zone!=undef{
-    exec { 'adjoin_with_password':
-      path        => '/usr/bin:/usr/sbin:/bin',
-      command     => "adjoin -V -u \'${_user}\' -p \'${_password}\' -z \'${_zone}\' \'${_domain}\'",
-      unless      => "adinfo -d | grep ${_domain}",
-      notify      => Exec['run_adflush_and_adreload'],
-    }
+    
+    $_command = "adjoin -V -u \'${_user}\' -p \'${_password}\' -z \'${_zone}\' \'${_domain}\'"
+
   } else{
-    exec { 'adjoin_with_password':
-      path        => '/usr/bin:/usr/sbin:/bin',
-      command     => "adjoin -w -u \'${_user}\' -p \'${_password}\' \'${_domain}\'",
-      unless      => "adinfo -d | grep ${_domain}",
-      notify      => Exec['run_adflush_and_adreload'],
+    $_command = "adjoin -w -u \'${_user}\' -p \'${_password}\' \'${_domain}\'"
     }
   }
+  exec { 'adjoin_with_password':
+    path      => '/usr/bin:/usr/sbin:/bin',
+    command   => ${_command},
+    unless    => "adinfo -d | grep ${_domain}",
+    notify    => Exec['run_adflush_and_adreload'],
+  }
+
   exec { 'run_adflush_and_adreload':
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => 'adflush && adreload',
