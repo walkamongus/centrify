@@ -4,7 +4,7 @@
 #
 class centrify::install {
 
-  $_flush_crontab  = $::centrify::flush_crontab
+  $_flush_crontab = $::centrify::flush_crontab
 
   package { 'centrifydc':
     ensure => $::centrify::dc_package_ensure,
