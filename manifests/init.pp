@@ -34,6 +34,8 @@ class centrify (
   $krb_config            = $::centrify::params::krb_config,
   $flush_crontab         = $::centrify::params::flush_crontab,
   $zone                  = $::centrify::params::zone,
+  $crontab_time_min      = $::centrify::params::crontab_time_min,
+  
 ) inherits ::centrify::params {
 
   if $krb_ticket_join == false {
