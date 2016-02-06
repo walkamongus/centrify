@@ -43,4 +43,5 @@ class centrify::params {
   $krb_config            = {}
   $flush_crontab         = false
   $zone                  = undef
+  $crontab_time_min      = '1440'
 }
