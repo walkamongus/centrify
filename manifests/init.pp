@@ -14,6 +14,7 @@ class centrify (
   $sshd_package_ensure   = $::centrify::params::sshd_package_ensure,
   $dc_service_name       = $::centrify::params::dc_service_name,
   $sshd_service_name     = $::centrify::params::sshd_service_name,
+  $sshd_service_ensure   = $::centrify::params::sshd_service_ensure,
   $dc_config_file        = $::centrify::params::dc_config_file,
   $sshd_config_file      = $::centrify::params::sshd_config_file,
   $allow_users_file      = $::centrify::params::allow_users_file,
@@ -35,7 +36,7 @@ class centrify (
   $flush_crontab         = $::centrify::params::flush_crontab,
   $zone                  = $::centrify::params::zone,
   $crontab_time_min      = $::centrify::params::crontab_time_min,
-  
+
 ) inherits ::centrify::params {
 
   if $krb_ticket_join == false {
