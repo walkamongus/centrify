@@ -43,6 +43,8 @@ It also manages the Centrify DC agent and OpenSSH daemons.
 * Services
     * centrifydc
     * centrifydc-sshd
+* Cron
+    * flush and reload cronjob
 * Execs
     * for username and password joins
         * the `adjoin` command is run with supplied credentials
@@ -73,7 +75,7 @@ Set up a basic Centrify Express installation and join an Active Directory domain
 
 ## Usage
 
-Set up Centrify Express and join an Active Directory domain via a keytab (initializing a basic krb5.conf file), allow a list of users, and set a configuration directive in the centrifydc.conf file:
+Set up Centrify Express and join an Active Directory domain via a keytab (initializing a basic krb5.conf file), allow a list of users, set a configuration directive in the centrifydc.conf file, and install a daily cronjob that flushes and reloads Centrify:
 
     class { '::centrify':
       join_user             => 'joinuser',
@@ -81,6 +83,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
       krb_ticket_join       => true,
       krb_keytab            => '/etc/example.keytab',
       initialize_krb_config => true,
+      install_flush_cronjob => true,
       allow_users           => [
         'user1',
         'user2',
@@ -140,6 +143,13 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `krb_keytab`: String. Absolute path to the keytab file used to join the domain.
 * `initialize_krb_config`: Boolean. Whether to initialize `krb_config_file` with the contents of `krb_config`.
 * `krb_config`: Hash. Configuration used to initialize `krb_config_file` for performing a keytab join.
+* `zone`: String. Name of the zone in which to place the computer account. 
+* `install_flush_cronjob`: Boolean. Whether to install a cronjob that flushes and reloads Centrify.
+* `flush_cronjob_min`: String. Cron minute for flush and reload cronjob.
+* `flush_cronjob_hour`: String. Cron hour for flush and reload cronjob.
+* `flush_cronjob_monthday`: String. Cron day of month for flush and reload cronjob.
+* `flush_cronjob_month`: String. Cron month for flush and reload cronjob.
+* `flush_cronjob_weekday`: String. Cron day of week for flush and reload cronjob.
 
 
 ###Types
@@ -151,6 +161,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * centrify::params
 * centrify::service
 * centrify::join
+* centrify::cron
 * centrify::adjoin::password
 * centrify::adjoin::keytab
 
