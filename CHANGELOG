@@ -1,2 +1,6 @@
+2016-05-13 Release 0.2.0
+- add configurable flush and reload cronjob
+- add ability to set Express license
+- manage sshd service enable and ensure parameters independently
 2015-10-15 Release 0.1.0
 - initial Puppet Forge release
