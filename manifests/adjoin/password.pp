@@ -10,19 +10,17 @@ class centrify::adjoin::password {
   $_domain   = $::centrify::domain
   $_zone     = $::centrify::zone
 
-  if $_zone!=undef{
-    
+  if $_zone!=undef {
     $_command = "adjoin -V -u \'${_user}\' -p \'${_password}\' -z \'${_zone}\' \'${_domain}\'"
-
-  } else{
+  } else {
     $_command = "adjoin -w -u \'${_user}\' -p \'${_password}\' \'${_domain}\'"
-    }
   }
+
   exec { 'adjoin_with_password':
-    path      => '/usr/bin:/usr/sbin:/bin',
-    command   => ${_command},
-    unless    => "adinfo -d | grep ${_domain}",
-    notify    => Exec['run_adflush_and_adreload'],
+    path    => '/usr/bin:/usr/sbin:/bin',
+    command => $_command,
+    unless  => "adinfo -d | grep ${_domain}",
+    notify  => Exec['run_adflush_and_adreload'],
   }
 
   exec { 'run_adflush_and_adreload':
