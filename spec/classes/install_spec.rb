@@ -8,12 +8,13 @@ describe 'centrify' do
           facts
         end
 
-        context "centrify::install class with default parameters" do
+        context 'centrify::install class with default parameters' do
           let(:params) {{ }}
 
           it { is_expected.to compile.with_all_deps }
-
           it { is_expected.to contain_class('centrify::install') }
+          it { is_expected.not_to contain_class('centrify::cron') }
+
           case facts[:osfamily]
           when 'Debian'
             it do 
@@ -42,6 +43,14 @@ describe 'centrify' do
               })
             end
           end
+        end
+
+        context 'centrify::install with flush cronjob enabled' do
+          let(:params) do
+            { :install_flush_cronjob => true }
+          end
+
+          it { is_expected.to contain_class('centrify::cron') }
         end
       end
     end
