@@ -1,7 +1,7 @@
 # == Class centrify::service
 #
 # This class is meant to be called from centrify.
-# It ensure the service is running.
+# It ensures the service is running and license is correct.
 #
 class centrify::service {
   service { 'centrifydc':
@@ -18,5 +18,13 @@ class centrify::service {
     enable     => false,
     hasstatus  => true,
     hasrestart => true,
+  }
+
+  if $centrify::use_express_license {
+    exec { 'set_express_license':
+      user    => 'root',
+      command => '/usr/bin/adlicense --express',
+      onlyif  => 'adinfo | grep -i \'licensed[[:space:]]*features:[[:space:]]*enabled\'',
+    }
   }
 }

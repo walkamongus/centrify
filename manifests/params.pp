@@ -43,6 +43,7 @@ class centrify::params {
   $initialize_krb_config  = false
   $krb_config             = {}
   $zone                   = undef
+  $use_express_license    = false
   $install_flush_cronjob  = false
   $flush_cronjob_min      = '0'
   $flush_cronjob_hour     = '0'

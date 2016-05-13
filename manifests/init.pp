@@ -34,6 +34,7 @@ class centrify (
   $krb_config_file        = $::centrify::params::krb_config_file,
   $krb_config             = $::centrify::params::krb_config,
   $zone                   = $::centrify::params::zone,
+  $use_express_license    = $::centrify::params::use_express_license,
   $install_flush_cronjob  = $::centrify::params::install_flush_cronjob,
   $flush_cronjob_min      = $::centrify::params::flush_cronjob_min,
   $flush_cronjob_hour     = $::centrify::params::flush_cronjob_hour,
@@ -67,6 +68,7 @@ class centrify (
   if $krb_keytab            { validate_absolute_path($krb_keytab) }
   if $krb_ticket_join       { validate_bool($krb_ticket_join) }
   if $zone                  { validate_string($zone) }
+  if $use_express_license   { validate_bool($use_express_license) }
   if $install_flush_cronjob { validate_bool($install_flush_cronjob) }
 
   if $install_flush_cronjob {
