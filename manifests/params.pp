@@ -24,6 +24,7 @@ class centrify::params {
   $dc_service_name        = 'centrifydc'
   $sshd_service_name      = 'centrify-sshd'
   $sshd_service_ensure    = 'running'
+  $sshd_service_enable    = true
   $dc_config_file         = '/etc/centrifydc/centrifydc.conf'
   $sshd_config_file       = '/etc/centrifydc/ssh/sshd_config'
   $krb_config_file        = '/etc/krb5.conf'

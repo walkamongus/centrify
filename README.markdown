@@ -126,6 +126,8 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `sshd_package_ensure`: String. Set to 'present' or 'absent'.
 * `dc_service_name`: String. Name of the centrifydc service daemon.
 * `sshd_service_name`: String. Name of the centrifydc-sshd service daemon.
+* `sshd_service_ensure`: String. Value of the `ensure` parameter of the sshd service resource.
+* `sshd_service_enable`: Boolean. Value for the `enable` parameter of the sshd service resource.
 * `dc_config_file`: String. Absolute path to the centrifydc.conf file.
 * `sshd_config_file`: String. Absolute path to the centrify sshd_config file.
 * `krb_config_file`: String. Absolute path to the kerberos krb5.conf file.

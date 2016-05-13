@@ -15,7 +15,7 @@ class centrify::service {
   service { 'centrify-sshd':
     ensure     => $::centrify::sshd_service_ensure,
     name       => $::centrify::sshd_service_name,
-    enable     => false,
+    enable     => $::centrify::sshd_service_enable,
     hasstatus  => true,
     hasrestart => true,
   }

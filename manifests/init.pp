@@ -15,6 +15,7 @@ class centrify (
   $dc_service_name        = $::centrify::params::dc_service_name,
   $sshd_service_name      = $::centrify::params::sshd_service_name,
   $sshd_service_ensure    = $::centrify::params::sshd_service_ensure,
+  $sshd_service_enable    = $::centrify::params::sshd_service_enable,
   $dc_config_file         = $::centrify::params::dc_config_file,
   $sshd_config_file       = $::centrify::params::sshd_config_file,
   $allow_users_file       = $::centrify::params::allow_users_file,
@@ -70,6 +71,7 @@ class centrify (
   if $zone                  { validate_string($zone) }
   if $use_express_license   { validate_bool($use_express_license) }
   if $install_flush_cronjob { validate_bool($install_flush_cronjob) }
+  if $sshd_service_enable   { validate_bool($sshd_service_enable) }
 
   if $install_flush_cronjob {
     validate_string(
@@ -89,19 +91,9 @@ class centrify (
     $dc_package_name,
     $sshd_package_name,
     $dc_service_name,
-    $sshd_service_name
-  )
-
-  validate_re(
+    $sshd_service_name,
     $dc_package_ensure,
-    '^(present|absent)$',
-    "'dc_package_ensure' must be set to either 'present' or 'absent'."
-  )
-
-  validate_re(
     $sshd_package_ensure,
-    '^(present|absent)$',
-    "'sshd_package_ensure' must be set to either 'present' or 'absent'."
   )
 
   validate_absolute_path($dc_config_file)
