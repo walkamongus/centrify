@@ -23,7 +23,8 @@ class centrify::service {
   if $centrify::use_express_license {
     exec { 'set_express_license':
       user    => 'root',
-      command => '/usr/bin/adlicense --express',
+      path    => ['/bin', '/usr/bin'],
+      command => 'adlicense --express',
       onlyif  => 'adinfo | grep -i \'licensed[[:space:]]*features:[[:space:]]*enabled\'',
     }
   }

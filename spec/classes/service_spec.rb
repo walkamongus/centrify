@@ -36,7 +36,8 @@ describe 'centrify' do
           it do
             is_expected.to contain_exec('set_express_license').with({
               'user'    => 'root',
-              'command' => '/usr/bin/adlicense --express',
+              'path'    => ['/bin', '/usr/bin'],
+              'command' => 'adlicense --express',
               'onlyif'  => 'adinfo | grep -i \'licensed[[:space:]]*features:[[:space:]]*enabled\'',
             })
           end
