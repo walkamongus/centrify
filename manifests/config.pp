@@ -4,10 +4,11 @@
 #
 class centrify::config {
 
-  $_allow_users  = $::centrify::allow_users
-  $_allow_groups = $::centrify::allow_groups
-  $_deny_users   = $::centrify::deny_users
-  $_deny_groups  = $::centrify::deny_groups
+  $_allow_users         = $::centrify::allow_users
+  $_allow_groups        = $::centrify::allow_groups
+  $_deny_users          = $::centrify::deny_users
+  $_deny_groups         = $::centrify::deny_groups
+  $_sshd_config_ensure  = $::centrify::sshd_package_ensure
 
   file { 'centrifydc_config':
     ensure => present,
@@ -18,7 +19,7 @@ class centrify::config {
   }
 
   file { 'centrifydc_sshd_config':
-    ensure => present,
+    ensure => $_sshd_config_ensure,
     path   => $::centrify::sshd_config_file,
     owner  => 'root',
     group  => 'root',

@@ -32,6 +32,10 @@ class centrify (
   $initialize_krb_config = $::centrify::params::initialize_krb_config,
   $krb_config_file       = $::centrify::params::krb_config_file,
   $krb_config            = $::centrify::params::krb_config,
+  $flush_crontab         = $::centrify::params::flush_crontab,
+  $zone                  = $::centrify::params::zone,
+  $crontab_time_min      = $::centrify::params::crontab_time_min,
+  
 ) inherits ::centrify::params {
 
   if $krb_ticket_join == false {
@@ -57,6 +61,8 @@ class centrify (
   if $krb_config      { validate_hash($krb_config) }
   if $krb_keytab      { validate_absolute_path($krb_keytab) }
   if $krb_ticket_join { validate_bool($krb_ticket_join) }
+  if $flush_crontab   { validate_bool($flush_crontab) }
+  if $zone            { validate_string($zone) }
 
   if $initialize_krb_config {
     validate_bool($initialize_krb_config)
