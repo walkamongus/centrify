@@ -13,7 +13,7 @@ describe 'centrify' do
 
           it do
             is_expected.to contain_file('centrifydc_config').with({
-              'ensure' => 'present',
+              'ensure' => 'file',
               'path'   => '/etc/centrifydc/centrifydc.conf',
               'owner'  => 'root',
               'group'  => 'root',
@@ -22,7 +22,7 @@ describe 'centrify' do
           end
           it do
             is_expected.to contain_file('centrifydc_sshd_config').with({
-              'ensure' => 'present',
+              'ensure' => 'file',
               'path'   => '/etc/centrifydc/ssh/sshd_config',
               'owner'  => 'root',
               'group'  => 'root',
@@ -41,7 +41,7 @@ describe 'centrify' do
 
           it do
             is_expected.to contain_file('allow_users_file').with({
-              'ensure' => 'present',
+              'ensure' => 'file',
               'path'   => '/etc/centrifydc/users.allow',
               'owner'  => 'root',
               'group'  => 'root',
@@ -62,7 +62,7 @@ describe 'centrify' do
 
           it do
             is_expected.to contain_file('allow_groups_file').with({
-              'ensure' => 'present',
+              'ensure' => 'file',
               'path'   => '/etc/centrifydc/groups.allow',
               'owner'  => 'root',
               'group'  => 'root',
@@ -83,7 +83,7 @@ describe 'centrify' do
 
           it do
             is_expected.to contain_file('deny_users_file').with({
-              'ensure' => 'present',
+              'ensure' => 'file',
               'path'   => '/etc/centrifydc/users.deny',
               'owner'  => 'root',
               'group'  => 'root',
@@ -104,7 +104,7 @@ describe 'centrify' do
 
           it do
             is_expected.to contain_file('deny_groups_file').with({
-              'ensure' => 'present',
+              'ensure' => 'file',
               'path'   => '/etc/centrifydc/groups.deny',
               'owner'  => 'root',
               'group'  => 'root',

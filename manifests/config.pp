@@ -3,15 +3,13 @@
 # This class is called from centrify for service config.
 #
 class centrify::config {
-
   $_allow_users         = $::centrify::allow_users
   $_allow_groups        = $::centrify::allow_groups
   $_deny_users          = $::centrify::deny_users
   $_deny_groups         = $::centrify::deny_groups
-  $_sshd_config_ensure  = $::centrify::sshd_package_ensure
 
   file { 'centrifydc_config':
-    ensure => present,
+    ensure => file,
     path   => $::centrify::dc_config_file,
     owner  => 'root',
     group  => 'root',
@@ -19,7 +17,7 @@ class centrify::config {
   }
 
   file { 'centrifydc_sshd_config':
-    ensure => $_sshd_config_ensure,
+    ensure => $::centrify::sshd_config_ensure,
     path   => $::centrify::sshd_config_file,
     owner  => 'root',
     group  => 'root',
@@ -28,7 +26,7 @@ class centrify::config {
 
   if $_allow_users {
     file { 'allow_users_file':
-      ensure  => present,
+      ensure  => file,
       path    => $::centrify::allow_users_file,
       owner   => 'root',
       group   => 'root',
@@ -43,7 +41,7 @@ class centrify::config {
 
   if $_allow_groups {
     file { 'allow_groups_file':
-      ensure  => present,
+      ensure  => file,
       path    => $::centrify::allow_groups_file,
       owner   => 'root',
       group   => 'root',
@@ -58,7 +56,7 @@ class centrify::config {
 
   if $_deny_users {
     file { 'deny_users_file':
-      ensure  => present,
+      ensure  => file,
       path    => $::centrify::deny_users_file,
       owner   => 'root',
       group   => 'root',
@@ -73,7 +71,7 @@ class centrify::config {
 
   if $_deny_groups {
     file { 'deny_groups_file':
-      ensure  => present,
+      ensure  => file,
       path    => $::centrify::deny_groups_file,
       owner   => 'root',
       group   => 'root',
@@ -85,5 +83,4 @@ class centrify::config {
       value  => "file:${::centrify::deny_groups_file}",
     }
   }
-
 }

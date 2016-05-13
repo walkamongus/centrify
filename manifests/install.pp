@@ -3,8 +3,7 @@
 # This class is called from centrify for install.
 #
 class centrify::install {
-
-  $_flush_crontab = $::centrify::flush_crontab
+  $_install_flush_cronjob = $::centrify::install_flush_cronjob
 
   package { 'centrifydc':
     ensure => $::centrify::dc_package_ensure,
@@ -15,7 +14,7 @@ class centrify::install {
     name   => $::centrify::sshd_package_name,
   }
 
-  if $_flush_crontab{
+  if $_install_flush_cronjob {
     contain '::centrify::cron'
   }
 }
