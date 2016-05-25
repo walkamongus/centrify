@@ -9,6 +9,7 @@ group :test do
   gem "metadata-json-lint"
   gem "rspec-puppet-facts"
   gem "simplecov"
+  gem 'rubocop', '0.40.0'
 end
 
 group :development do
