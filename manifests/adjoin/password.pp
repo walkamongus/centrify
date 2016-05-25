@@ -12,10 +12,10 @@ class centrify::adjoin::password {
 
   if $_zone!=undef{
     
-    $_command = "adjoin -V -u \'${_user}\' -p \'${_password}\' -z \'${_zone}\' \'${_domain}\'"
+    $_command = "adjoin -V -u \'${_user}\' -p \'${_password}\' -N ${::hostname} -z \'${_zone}\' \'${_domain}\'"
 
   } else{
-    $_command = "adjoin -w -u \'${_user}\' -p \'${_password}\' \'${_domain}\'"
+    $_command = "adjoin -w -u \'${_user}\' -p \'${_password}\' -N ${::hostname} \'${_domain}\'"
     }
   }
   exec { 'adjoin_with_password':
