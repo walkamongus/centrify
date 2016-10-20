@@ -1,3 +1,6 @@
+2016-10-20 Release 0.3.0
+- add support for specifying zones and containers during join
+- centrifydc_line type converts all value param settings to strings
 2016-05-13 Release 0.2.0
 - add configurable flush and reload cronjob
 - add ability to set Express license

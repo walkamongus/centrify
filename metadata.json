@@ -1,13 +1,15 @@
 {
   "name": "walkamongus-centrify",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Chadwick Banning",
   "summary": "Puppet module to manage Centrify Express",
   "license": "Apache-2.0",
   "source": "https://github.com/walkamongus/centrify",
   "project_page": "https://github.com/walkamongus/centrify",
   "issues_url": "https://github.com/walkamongus/centrify/issues",
-  "tags": ["centrify"],
+  "tags": [
+    "centrify"
+  ],
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
