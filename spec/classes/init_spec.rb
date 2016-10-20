@@ -26,10 +26,12 @@ describe 'centrify' do
 
   context 'unsupported operating system' do
     describe 'centrify class without any parameters on Solaris/Nexenta' do
-      let(:facts) {{
-        :osfamily        => 'Solaris',
-        :operatingsystem => 'Nexenta',
-      }}
+      let(:facts) do
+        {
+          :osfamily        => 'Solaris',
+          :operatingsystem => 'Nexenta',
+        }
+      end
 
       it { expect { is_expected.to contain_package('centrify') }.to raise_error(Puppet::Error, /Nexenta not supported/) }
     end
