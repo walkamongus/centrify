@@ -14,16 +14,15 @@ Puppet::Type.newtype(:centrifydc_line) do
   newproperty(:value) do
     desc 'The value for the configuration setting'
     newvalues(/^[\w\.:\/]+$/)
+    munge(&:to_s)
   end
 
   newproperty(:target) do
     desc 'Location of the centrifydc.conf file'
-    defaultto {
-      if @resource.class.defaultprovider.ancestors.include? (Puppet::Provider::ParsedFile)
+    defaultto do
+      if @resource.class.defaultprovider.ancestors.include? Puppet::Provider::ParsedFile
         @resource.class.defaultprovider.default_target
-      else
-        nil
       end
-    }
+    end
   end
 end
