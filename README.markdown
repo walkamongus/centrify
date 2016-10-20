@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/walkamongus/centrify.svg?branch=master)](https://travis-ci.org/walkamongus/centrify)
+
 #### Table of Contents
 
 1. [Overview](#overview)
