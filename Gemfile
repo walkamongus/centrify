@@ -11,6 +11,7 @@ group :test do
   gem 'simplecov', '>=0.11.0'
   gem 'rubocop', '0.40.0'
   gem 'puppet-lint', '~> 2.0'
+  gem 'puppet-syntax', '~> 2.1.0'
   gem 'json_pure', '~> 1.8.3'
 end
 
