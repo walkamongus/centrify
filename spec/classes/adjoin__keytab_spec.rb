@@ -89,7 +89,7 @@ describe 'centrify' do
           it do
             is_expected.to contain_exec('run_adjoin_with_keytab').with({
               'path'        => '/usr/bin:/usr/sbin:/bin',
-              'command'     => 'adjoin --force -w example.com',
+              'command'     => "adjoin --force -w 'example.com'",
               'unless'      => 'adinfo -d | grep example.com',
               'refreshonly' => 'true',
             })
@@ -101,6 +101,21 @@ describe 'centrify' do
               'command'     => 'adflush && adreload',
               'refreshonly' => 'true',
             })
+          end
+
+          context 'with container set' do
+            let(:params) do
+              super().merge({
+                :domain    => 'example.com',
+                :container => 'ou=Unix computers',
+              })
+            end
+
+            it do
+              is_expected.to contain_exec('run_adjoin_with_keytab').with({
+                'command' => "adjoin --force -w -c 'ou=Unix computers' 'example.com'",
+              })
+            end
           end
         end
       end

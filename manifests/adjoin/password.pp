@@ -5,15 +5,29 @@
 #
 class centrify::adjoin::password {
 
-  $_user     = $::centrify::join_user
-  $_password = $::centrify::join_password
-  $_domain   = $::centrify::domain
-  $_zone     = $::centrify::zone
+  $_user      = $::centrify::join_user
+  $_password  = $::centrify::join_password
+  $_domain    = $::centrify::domain
+  $_container = $::centrify::container
+  $_zone      = $::centrify::zone
 
-  if $_zone!=undef {
-    $_command = "adjoin -V -u \'${_user}\' -p \'${_password}\' -z \'${_zone}\' \'${_domain}\'"
+  $_default_join_opts = ["-u '${_user}'", "-p '${_password}'"]
+
+  if $_container {
+    $_container_opt = "-c '${_container}'"
   } else {
-    $_command = "adjoin -w -u \'${_user}\' -p \'${_password}\' \'${_domain}\'"
+    $_container_opt = ''
+  }
+
+  if $_zone {
+    $_zone_opt = "-z '${_zone}'"
+    $_join_opts = delete(concat($_default_join_opts, $_zone_opt, $_container_opt), '')
+    $_options = join($_join_opts, ' ')
+    $_command = "adjoin -V ${_options} '${_domain}'"
+  } else {
+    $_join_opts = delete(concat($_default_join_opts, $_container_opt), '')
+    $_options = join($_join_opts, ' ')
+    $_command = "adjoin -w ${_options} '${_domain}'"
   }
 
   exec { 'adjoin_with_password':

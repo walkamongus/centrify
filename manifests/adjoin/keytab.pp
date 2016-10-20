@@ -5,10 +5,12 @@
 #
 class centrify::adjoin::keytab {
 
-  $_domain     = $::centrify::domain
-  $_join_user  = $::centrify::join_user
+  $_user       = $::centrify::join_user
   $_krb_keytab = $::centrify::krb_keytab
   $_krb_config = $::centrify::krb_config
+  $_domain     = $::centrify::domain
+  $_container  = $::centrify::container
+  $_zone       = $::centrify::zone
 
   file { 'krb_keytab':
     path   => $_krb_keytab,
@@ -36,14 +38,34 @@ class centrify::adjoin::keytab {
     }
   }
 
+
+  if $_container {
+    $_container_opt = "-c '${_container}'"
+  } else {
+    $_container_opt = ''
+  }
+
+  if $_zone {
+    $_default_join_opts = ['--force', '-V']
+    $_zone_opt = "-z '${_zone}'"
+    $_join_opts = delete(concat($_default_join_opts, $_zone_opt, $_container_opt), '')
+    $_options = join($_join_opts, ' ')
+    $_command = "adjoin ${_options} '${_domain}'"
+  } else {
+    $_default_join_opts = ['--force', '-w']
+    $_join_opts = delete(concat($_default_join_opts, $_container_opt), '')
+    $_options = join($_join_opts, ' ')
+    $_command = "adjoin ${_options} '${_domain}'"
+  }
+
   exec { 'run_kinit_with_keytab':
     path        => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
-    command     => "kinit -kt ${_krb_keytab} ${_join_user}",
+    command     => "kinit -kt ${_krb_keytab} ${_user}",
     refreshonly => true,
   }->
   exec { 'run_adjoin_with_keytab':
     path        => '/usr/bin:/usr/sbin:/bin',
-    command     => "adjoin --force -w ${_domain}",
+    command     => $_command,
     unless      => "adinfo -d | grep ${_domain}",
     refreshonly => true,
   }->

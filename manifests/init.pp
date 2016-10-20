@@ -27,6 +27,7 @@ class centrify (
   $allow_groups           = $::centrify::params::allow_groups,
   $deny_groups            = $::centrify::params::deny_groups,
   $domain                 = $::centrify::params::domain,
+  $container              = $::centrify::params::container,
   $join_user              = $::centrify::params::join_user,
   $join_password          = $::centrify::params::join_password,
   $krb_ticket_join        = $::centrify::params::krb_ticket_join,

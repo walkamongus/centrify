@@ -37,17 +37,28 @@ describe 'centrify' do
 
           context 'with zone set' do
             let(:params) do
-              {
-                :join_user     => 'user',
-                :join_password => 'password',
-                :domain        => 'example.com',
-                :zone          => 'ZONE',
-              }
+              super().merge({
+                :zone => 'ZONE',
+              })
             end
 
             it do
               is_expected.to contain_exec('adjoin_with_password').with({
                 'command' => "adjoin -V -u 'user' -p 'password' -z 'ZONE' 'example.com'",
+              })
+            end
+          end
+
+          context 'with container set' do
+            let(:params) do
+              super().merge({
+                :container => 'ou=Unix computers',
+              })
+            end
+
+            it do
+              is_expected.to contain_exec('adjoin_with_password').with({
+                'command' => "adjoin -w -u 'user' -p 'password' -c 'ou=Unix computers' 'example.com'",
               })
             end
           end

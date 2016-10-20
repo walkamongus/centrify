@@ -37,6 +37,7 @@ class centrify::params {
   $allow_groups           = undef
   $deny_groups            = undef
   $domain                 = undef
+  $container              = undef
   $join_user              = undef
   $join_password          = undef
   $krb_ticket_join        = false

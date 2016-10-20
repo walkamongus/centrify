@@ -5,12 +5,7 @@
 class centrify::join {
   if $::centrify::krb_ticket_join {
     contain '::centrify::adjoin::keytab'
-  }
-  elsif !$::centrify::krb_ticket_join {
-  #this is the notify for the adjoin exec
+  } else {
     contain '::centrify::adjoin::password'
-  }
-  else {
-    fail('krb_ticket_join must be set to "true" or "false".')
   }
 }
