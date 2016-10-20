@@ -147,6 +147,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `initialize_krb_config`: Boolean. Whether to initialize `krb_config_file` with the contents of `krb_config`.
 * `krb_config`: Hash. Configuration used to initialize `krb_config_file` for performing a keytab join.
 * `zone`: String. Name of the zone in which to place the computer account. 
+* `container`: String. LDAP path to the OU container in which to place the computer account.
 * `use_express_license`: Boolean. If true, set the adlicense to `express` if licensed features are enabled.
 * `install_flush_cronjob`: Boolean. Whether to install a cronjob that flushes and reloads Centrify.
 * `flush_cronjob_min`: String. Cron minute for flush and reload cronjob.
