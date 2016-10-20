@@ -6,6 +6,8 @@ AllCops:
     - 'vendor/**/*'
     # Ignore code from test fixtures
     - 'spec/fixtures/**/*'
+    # Ignore forge packages
+    - 'pkg/**/*'
 
 Lint/ConditionPosition:
   Enabled: true
