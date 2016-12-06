@@ -11,6 +11,7 @@ class centrify::adjoin::keytab {
   $_domain     = $::centrify::domain
   $_container  = $::centrify::container
   $_zone       = $::centrify::zone
+  $_precreate  = $::centrify::precreate
 
   file { 'krb_keytab':
     path   => $_krb_keytab,
@@ -61,18 +62,33 @@ class centrify::adjoin::keytab {
   exec { 'run_kinit_with_keytab':
     path        => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
     command     => "kinit -kt ${_krb_keytab} ${_user}",
-    refreshonly => true,
-  }->
-  exec { 'run_adjoin_with_keytab':
-    path        => '/usr/bin:/usr/sbin:/bin',
-    command     => $_command,
     unless      => "adinfo -d | grep ${_domain}",
-    refreshonly => true,
-  }->
+  }
+
+  if $_precreate {
+    $_precreate_command = "${_command} -P"
+    exec { 'run_adjoin_precreate_with_keytab':
+      path    => '/usr/bin:/usr/sbin:/bin',
+      command => $_precreate_command,
+      unless  => "adinfo -d | grep ${_domain}",
+      require => Exec['run_kinit_with_keytab'],
+      before  => Exec['run_adjoin_with_keytab'],
+    }
+  }
+
+  exec { 'run_adjoin_with_keytab':
+    path    => '/usr/bin:/usr/sbin:/bin',
+    command => $_command,
+    unless  => "adinfo -d | grep ${_domain}",
+    notify  => Exec['run_adflush_and_adreload'],
+    require => Exec['run_kinit_with_keytab'],
+  }
+
   exec { 'run_adflush_and_adreload':
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => 'adflush && adreload',
     refreshonly => true,
+    require     => Exec['run_adjoin_with_keytab'],
   }
 
 }
