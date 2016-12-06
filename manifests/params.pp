@@ -53,4 +53,5 @@ class centrify::params {
   $flush_cronjob_month    = '*'
   $flush_cronjob_weekday  = '*'
   $extra_args             = undef
+  $precreate              = false
 }
