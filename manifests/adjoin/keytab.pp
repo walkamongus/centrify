@@ -60,9 +60,9 @@ class centrify::adjoin::keytab {
   }
 
   exec { 'run_kinit_with_keytab':
-    path        => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
-    command     => "kinit -kt ${_krb_keytab} ${_user}",
-    unless      => "adinfo -d | grep ${_domain}",
+    path    => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
+    command => "kinit -kt ${_krb_keytab} ${_user}",
+    unless  => "adinfo -d | grep ${_domain}",
   }
 
   if $_precreate {
