@@ -55,6 +55,7 @@ It also manages the Centrify DC agent and OpenSSH daemons.
         * the `kinit` command is run to obtain an initial TGT
         * the `adjoin` command is run to join via keytab
     * the `adflush` and `adreload` commands are run post-join
+    * the `adjoin` command is run to precreate computer and extension objects if `precreate => true`
     * the `adlicense --express` command is run if `use_express_license => true` (the default) and licensed features are enabled
 
 ### Setup Requirements
@@ -122,7 +123,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 
 ###Parameters
 
-* `dc_package_name`: String. Name of the centrifydc package. 
+* `dc_package_name`: String. Name of the centrifydc package.
 * `sshd_package_name`: String. Name of the centrifydc-openssh package.
 * `dc_package_ensure`: String. Set to 'present' or 'absent'.
 * `sshd_package_ensure`: String. Set to 'present' or 'absent'.
@@ -148,7 +149,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `krb_keytab`: String. Absolute path to the keytab file used to join the domain.
 * `initialize_krb_config`: Boolean. Whether to initialize `krb_config_file` with the contents of `krb_config`.
 * `krb_config`: Hash. Configuration used to initialize `krb_config_file` for performing a keytab join.
-* `zone`: String. Name of the zone in which to place the computer account. 
+* `zone`: String. Name of the zone in which to place the computer account.
 * `container`: String. LDAP path to the OU container in which to place the computer account.
 * `use_express_license`: Boolean. If true, set the adlicense to `express` if licensed features are enabled.
 * `install_flush_cronjob`: Boolean. Whether to install a cronjob that flushes and reloads Centrify.
@@ -157,6 +158,8 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `flush_cronjob_monthday`: String. Cron day of month for flush and reload cronjob.
 * `flush_cronjob_month`: String. Cron month for flush and reload cronjob.
 * `flush_cronjob_weekday`: String. Cron day of week for flush and reload cronjob.
+* `precreate`: Boolean. If true, `adjoin` will run to precreate the computer and extension object in AD prior to joining.
+* `extra_args`: Array. Array of extra arguments to pass to the `adjoin` command.
 
 
 ###Types
