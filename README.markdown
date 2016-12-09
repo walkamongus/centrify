@@ -159,6 +159,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `flush_cronjob_month`: String. Cron month for flush and reload cronjob.
 * `flush_cronjob_weekday`: String. Cron day of week for flush and reload cronjob.
 * `precreate`: Boolean. If true, `adjoin` will run to precreate the computer and extension object in AD prior to joining.
+* `extra_args`: Array. Array of extra arguments to pass to the `adjoin` command.
 
 
 ###Types

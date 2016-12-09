@@ -10,7 +10,6 @@ class centrify::adjoin::password {
   $_domain     = $::centrify::domain
   $_container  = $::centrify::container
   $_zone       = $::centrify::zone
-  $_precreate  = $::centrify::precreate
   $_extra_args = $::centrify::extra_args
 
   $_default_join_opts = ["-u '${_user}'", "-p '${_password}'"]
@@ -30,16 +29,6 @@ class centrify::adjoin::password {
     $_join_opts = delete(concat($_default_join_opts, $_container_opt, $_extra_args), '')
     $_options = join($_join_opts, ' ')
     $_command = "adjoin -w ${_options} '${_domain}'"
-  }
-
-  if $_precreate {
-    $_precreate_command = "${_command} -P"
-    exec { 'adjoin_precreate_with_password':
-      path    => '/usr/bin:/usr/sbin:/bin',
-      command => $_precreate_command,
-      unless  => "adinfo -d | grep ${_domain}",
-      before  => Exec['adjoin_with_password'],
-    }
   }
 
   exec { 'adjoin_with_password':

@@ -91,6 +91,7 @@ describe 'centrify' do
               'path'        => '/usr/bin:/usr/sbin:/bin',
               'command'     => "adjoin --force -w 'example.com'",
               'unless'      => 'adinfo -d | grep example.com',
+              'refreshonly' => 'true',
             })
           end
 
@@ -113,20 +114,6 @@ describe 'centrify' do
             it do
               is_expected.to contain_exec('run_adjoin_with_keytab').with({
                 'command' => "adjoin --force -w -c 'ou=Unix computers' 'example.com'",
-              })
-            end
-          end
-
-          context 'with precreate set' do
-            let(:params) do
-              super().merge({
-                :precreate => true,
-              })
-            end
-
-            it do
-              is_expected.to contain_exec('run_adjoin_precreate_with_keytab').with({
-                'command' => "adjoin --force -w 'example.com' -P",
               })
             end
           end
