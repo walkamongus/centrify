@@ -117,6 +117,20 @@ describe 'centrify' do
               })
             end
           end
+
+          context 'with extra_args set' do
+            let(:params) do
+              super().merge({
+                :extra_args => [ '--name foobar' ],
+              })
+            end
+
+            it do
+              is_expected.to contain_exec('run_adjoin_with_keytab').with({
+                'command' => "adjoin --force -w --name foobar 'example.com'",
+              })
+            end
+          end
         end
       end
     end

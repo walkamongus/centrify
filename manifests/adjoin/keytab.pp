@@ -11,6 +11,7 @@ class centrify::adjoin::keytab {
   $_domain     = $::centrify::domain
   $_container  = $::centrify::container
   $_zone       = $::centrify::zone
+  $_extra_args = $::centrify::extra_args
 
   file { 'krb_keytab':
     path   => $_krb_keytab,
@@ -48,12 +49,12 @@ class centrify::adjoin::keytab {
   if $_zone {
     $_default_join_opts = ['--force', '-V']
     $_zone_opt = "-z '${_zone}'"
-    $_join_opts = delete(concat($_default_join_opts, $_zone_opt, $_container_opt), '')
+    $_join_opts = delete(concat($_default_join_opts, $_zone_opt, $_container_opt, $_extra_args), '')
     $_options = join($_join_opts, ' ')
     $_command = "adjoin ${_options} '${_domain}'"
   } else {
     $_default_join_opts = ['--force', '-w']
-    $_join_opts = delete(concat($_default_join_opts, $_container_opt), '')
+    $_join_opts = delete(concat($_default_join_opts, $_container_opt, $_extra_args), '')
     $_options = join($_join_opts, ' ')
     $_command = "adjoin ${_options} '${_domain}'"
   }
