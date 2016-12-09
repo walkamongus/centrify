@@ -11,6 +11,7 @@ class centrify::adjoin::password {
   $_container  = $::centrify::container
   $_zone       = $::centrify::zone
   $_precreate  = $::centrify::precreate
+  $_extra_args = $::centrify::extra_args
 
   $_default_join_opts = ["-u '${_user}'", "-p '${_password}'"]
 
@@ -22,11 +23,11 @@ class centrify::adjoin::password {
 
   if $_zone {
     $_zone_opt = "-z '${_zone}'"
-    $_join_opts = delete(concat($_default_join_opts, $_zone_opt, $_container_opt), '')
+    $_join_opts = delete(concat($_default_join_opts, $_zone_opt, $_container_opt, $_extra_args), '')
     $_options = join($_join_opts, ' ')
     $_command = "adjoin -V ${_options} '${_domain}'"
   } else {
-    $_join_opts = delete(concat($_default_join_opts, $_container_opt), '')
+    $_join_opts = delete(concat($_default_join_opts, $_container_opt, $_extra_args), '')
     $_options = join($_join_opts, ' ')
     $_command = "adjoin -w ${_options} '${_domain}'"
   }
