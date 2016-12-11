@@ -76,6 +76,20 @@ describe 'centrify' do
               })
             end
           end
+
+          context 'with precreate set' do
+            let(:params) do
+              super().merge({
+                :precreate => true,
+              })
+            end
+
+            it do
+              is_expected.to contain_exec('adjoin_precreate_with_password').with({
+                'command' => "adjoin -w -u 'user' -p 'password' 'example.com' -P",
+              })
+            end
+          end
         end
       end
     end

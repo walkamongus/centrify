@@ -44,6 +44,7 @@ class centrify (
   $flush_cronjob_month    = $::centrify::params::flush_cronjob_month,
   $flush_cronjob_weekday  = $::centrify::params::flush_cronjob_weekday,
   $extra_args             = $::centrify::params::extra_args,
+  $precreate              = $::centrify::params::precreate,
 ) inherits ::centrify::params {
 
   if $krb_ticket_join == false {
@@ -74,6 +75,7 @@ class centrify (
   if $install_flush_cronjob { validate_bool($install_flush_cronjob) }
   if $sshd_service_enable   { validate_bool($sshd_service_enable) }
   if $extra_args            { validate_array($extra_args) }
+  if $precreate             { validate_bool($precreate) }
 
   if $install_flush_cronjob {
     validate_string(
