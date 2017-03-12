@@ -149,6 +149,8 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `krb_keytab`: String. Absolute path to the keytab file used to join the domain.
 * `initialize_krb_config`: Boolean. Whether to initialize `krb_config_file` with the contents of `krb_config`.
 * `krb_config`: Hash. Configuration used to initialize `krb_config_file` for performing a keytab join.
+* `selfserve_join` : Boolean. Whether to perform a --selfserve join.  Server must have been precreated.
+* `selfserve_rodc` : String. Name of DC to selfserve join to.  Required if using selfserve_join.
 * `zone`: String. Name of the zone in which to place the computer account.
 * `container`: String. LDAP path to the OU container in which to place the computer account.
 * `use_express_license`: Boolean. If true, set the adlicense to `express` if licensed features are enabled.
@@ -174,6 +176,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * centrify::cron
 * centrify::adjoin::password
 * centrify::adjoin::keytab
+* centrify::adjoin::selfserve
 
 
 ## Limitations
