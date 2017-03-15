@@ -11,7 +11,7 @@ group :test do
   gem 'simplecov', '>= 0.11.0'
   gem 'rubocop', '0.40.0'
   gem 'puppet-lint', '~> 2.0'
-  gem 'puppet-syntax', :git => 'https://github.com/gds-operations/puppet-syntax.git'
+  gem 'puppet-syntax', :git => 'https://github.com/voxpupuli/puppet-syntax'
   gem 'json_pure', '<= 2.0.1' if RUBY_VERSION < '2.0.0'
 end
 
