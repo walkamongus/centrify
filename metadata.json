@@ -1,6 +1,6 @@
 {
   "name": "walkamongus-centrify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Chadwick Banning",
   "summary": "Puppet module to manage Centrify Express",
   "license": "Apache-2.0",
