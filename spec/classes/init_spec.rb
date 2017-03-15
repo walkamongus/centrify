@@ -14,7 +14,6 @@ describe 'centrify' do
           it { is_expected.to compile.with_all_deps }
 
           it { is_expected.to contain_class('centrify') }
-          it { is_expected.to contain_class('centrify::params') }
           it { is_expected.to contain_class('centrify::install').that_comes_before('Class[centrify::config]') }
           it { is_expected.to contain_class('centrify::config') }
           it { is_expected.to contain_class('centrify::join').that_subscribes_to('Class[centrify::config]') }
@@ -33,7 +32,7 @@ describe 'centrify' do
         }
       end
 
-      it { expect { is_expected.to contain_package('centrify') }.to raise_error(Puppet::Error, /Nexenta not supported/) }
+      it { expect { catalogue }.to raise_error(Puppet::Error) }
     end
   end
 end
