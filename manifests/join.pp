@@ -3,13 +3,18 @@
 # This class is called from centrify for joining AD.
 #
 class centrify::join {
-  if $::centrify::selfserve_join {
-    contain '::centrify::adjoin::selfserve'
-  } else {
-    if $::centrify::krb_ticket_join {
+  case $::centrify::join_type {
+    /^selfserve$/: {
+      contain '::centrify::adjoin::selfserve'
+    }
+    /^keytab$/: {
       contain '::centrify::adjoin::keytab'
-    } else {
+    }
+    /^password$/: {
       contain '::centrify::adjoin::password'
+    }
+    default: {
+      fail("Invalid join_type: ${::centrify::join_type}.")
     }
   }
 }

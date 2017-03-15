@@ -11,7 +11,7 @@ describe 'centrify' do
         context 'centrify::adjoin::selfserve class' do
           let(:params) do
             {
-              :selfserve_join => true,
+              :join_type      => 'selfserve',
               :join_user      => 'user',
               :selfserve_rodc => 'domainctrlr.example.com',
               :domain         => 'example.com',

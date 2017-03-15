@@ -11,7 +11,7 @@ describe 'centrify' do
         context "centrify::adjoin::keytab class" do
           let(:params) do
             {
-              :krb_ticket_join       => true,
+              :join_type             => 'keytab',
               :join_user             => 'user',
               :krb_keytab            => '/tmp/join.keytab',
               :krb_config_file       => '/etc/krb5.conf',

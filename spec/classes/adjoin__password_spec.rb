@@ -11,6 +11,7 @@ describe 'centrify' do
         context 'centrify::adjoin::password class' do
           let(:params) do
             {
+              :join_type     => 'password',
               :join_user     => 'user',
               :join_password => 'password',
               :domain        => 'example.com',
