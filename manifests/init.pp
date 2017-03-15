@@ -35,6 +35,8 @@ class centrify (
   $initialize_krb_config  = $::centrify::params::initialize_krb_config,
   $krb_config_file        = $::centrify::params::krb_config_file,
   $krb_config             = $::centrify::params::krb_config,
+  $selfserve_join         = $::centrify::params::selfserve_join,
+  $selfserve_rodc         = $::centrify::params::selfserve_rodc,
   $zone                   = $::centrify::params::zone,
   $use_express_license    = $::centrify::params::use_express_license,
   $install_flush_cronjob  = $::centrify::params::install_flush_cronjob,
@@ -47,7 +49,7 @@ class centrify (
   $precreate              = $::centrify::params::precreate,
 ) inherits ::centrify::params {
 
-  if $krb_ticket_join == false {
+  if ($krb_ticket_join == false and $selfserve_join == false) {
     if ($join_user and !$join_password) {
       fail('Cannot set join_user without join_password')
     }
@@ -70,6 +72,7 @@ class centrify (
   if $krb_config            { validate_hash($krb_config) }
   if $krb_keytab            { validate_absolute_path($krb_keytab) }
   if $krb_ticket_join       { validate_bool($krb_ticket_join) }
+  if $selfserve_join        { validate_bool($krb_ticket_join) }
   if $zone                  { validate_string($zone) }
   if $use_express_license   { validate_bool($use_express_license) }
   if $install_flush_cronjob { validate_bool($install_flush_cronjob) }
@@ -99,6 +102,10 @@ class centrify (
     $dc_package_ensure,
     $sshd_package_ensure,
   )
+
+  if $selfserve_join {
+    validate_string($selfserve_rodc)
+  }
 
   validate_absolute_path($dc_config_file)
   validate_absolute_path($sshd_config_file)

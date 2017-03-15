@@ -44,6 +44,8 @@ class centrify::params {
   $krb_keytab             = undef
   $initialize_krb_config  = false
   $krb_config             = {}
+  $selfserve_join         = false
+  $selfserve_rodc         = undef
   $zone                   = undef
   $use_express_license    = false
   $install_flush_cronjob  = false
