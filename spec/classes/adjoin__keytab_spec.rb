@@ -89,7 +89,7 @@ describe 'centrify' do
           it do
             is_expected.to contain_exec('run_adjoin_with_keytab').with({
               'path'    => '/usr/bin:/usr/sbin:/bin',
-              'command' => "adjoin --force -w 'example.com'",
+              'command' => "adjoin -V --force -w 'example.com'",
               'unless'  => 'adinfo -d | grep example.com',
             })
           end
@@ -112,7 +112,7 @@ describe 'centrify' do
 
             it do
               is_expected.to contain_exec('run_adjoin_with_keytab').with({
-                'command' => "adjoin --force -w -c 'ou=Unix computers' 'example.com'",
+                'command' => "adjoin -V --force -w -c 'ou=Unix computers' 'example.com'",
               })
             end
           end
@@ -126,7 +126,7 @@ describe 'centrify' do
 
             it do
               is_expected.to contain_exec('run_adjoin_with_keytab').with({
-                'command' => "adjoin --force -w --name foobar 'example.com'",
+                'command' => "adjoin -V --force -w --name foobar 'example.com'",
               })
             end
           end
@@ -140,7 +140,7 @@ describe 'centrify' do
 
             it do
               is_expected.to contain_exec('run_adjoin_precreate_with_keytab').with({
-                'command' => "adjoin --force -w 'example.com' -P",
+                'command' => "adjoin -V --force -w 'example.com' -P",
               })
             end
           end

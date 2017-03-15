@@ -3,41 +3,50 @@
 # This class is called from centrify for
 # joining AD using a username and password.
 #
-class centrify::adjoin::password {
+class centrify::adjoin::password (
+  $join_user,
+  $join_password,
+  $domain,
+  $server,
+  $container,
+  $zone,
+  $precreate,
+  $extra_args,
+){
 
-  $_user       = $::centrify::join_user
-  $_password   = $::centrify::join_password
-  $_domain     = $::centrify::domain
-  $_container  = $::centrify::container
-  $_zone       = $::centrify::zone
-  $_extra_args = $::centrify::extra_args
-  $_precreate  = $::centrify::precreate
-
-  $_default_join_opts = ["-u '${_user}'", "-p '${_password}'"]
-
-  if $_container {
-    $_container_opt = "-c '${_container}'"
-  } else {
-    $_container_opt = ''
+  $_server_opt = $server ? {
+    undef   => '',
+    default => "-s '${server}'",
   }
 
-  if $_zone {
-    $_zone_opt = "-z '${_zone}'"
-    $_join_opts = delete(concat($_default_join_opts, $_zone_opt, $_container_opt, $_extra_args), '')
-    $_options = join($_join_opts, ' ')
-    $_command = "adjoin -V ${_options} '${_domain}'"
-  } else {
-    $_join_opts = delete(concat($_default_join_opts, $_container_opt, $_extra_args), '')
-    $_options = join($_join_opts, ' ')
-    $_command = "adjoin -w ${_options} '${_domain}'"
+  $_container_opt = $container ? {
+    undef   => '',
+    default => "-c '${container}'",
   }
 
-  if $_precreate {
-    $_precreate_command = "${_command} -P"
+  $_zone_opt = $zone ? {
+    undef   => '-w',
+    default => "-z '${zone}'"
+  }
+
+  $_opts = [
+    '-V',
+    $_zone_opt,
+    "-u '${join_user}'",
+    "-p '${join_password}'",
+    $_container_opt,
+    $_server_opt,
+  ]
+
+  $_join_opts = delete(concat($_opts, $extra_args), '')
+  $_options   = join($_join_opts, ' ')
+  $_command   = "adjoin ${_options} '${domain}'"
+
+  if $precreate {
     exec { 'adjoin_precreate_with_password':
       path    => '/usr/bin:/usr/sbin:/bin',
-      command => $_precreate_command,
-      unless  => "adinfo -d | grep ${_domain}",
+      command => "${_command} -P",
+      unless  => "adinfo -d | grep ${domain}",
       before  => Exec['adjoin_with_password'],
     }
   }
@@ -45,7 +54,7 @@ class centrify::adjoin::password {
   exec { 'adjoin_with_password':
     path    => '/usr/bin:/usr/sbin:/bin',
     command => $_command,
-    unless  => "adinfo -d | grep ${_domain}",
+    unless  => "adinfo -d | grep ${domain}",
     notify  => Exec['run_adflush_and_adreload'],
   }
 
@@ -54,4 +63,5 @@ class centrify::adjoin::password {
     command     => 'adflush && adreload',
     refreshonly => true,
   }
+
 }
