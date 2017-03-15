@@ -1,3 +1,8 @@
+2017-03-15 Release 1.0.0
+- [WARNING] THIS RELEASE DROPS SUPPORT FOR PUPPET 3
+- Add precreate option and the ability to provide extra arguments to adjoin
+- Add self-serve join option
+- Move to data-in-modules paradigm
 2016-10-20 Release 0.3.0
 - add support for specifying zones and containers during join
 - centrifydc_line type converts all value param settings to strings
