@@ -84,7 +84,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
     class { '::centrify':
       join_user             => 'joinuser',
       domain                => 'example.com',
-      krb_ticket_join       => true,
+      join_type             => 'keytab',
       krb_keytab            => '/etc/example.keytab',
       initialize_krb_config => true,
       install_flush_cronjob => true,
@@ -143,14 +143,13 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `allow_groups`: Array. Array of allowed groups to be placed in the `allow_groups_file`.
 * `deny_groups`: Array. Array of denied groups to be placed in the `denied_groups_file`.
 * `domain`: String. Active Directory domain to join.
+* `join_type` : Enum. What type of domain join to perform. Accepts a value of `password`, `keytab`, or `selfserve`.
 * `join_user`: String. User account used to join the Active Directory domain.
 * `join_password`: String. Password for `join_user` account.
-* `krb_ticket_join`: Boolean. Whether to use a keytab for joining the Active Directory domain.
 * `krb_keytab`: String. Absolute path to the keytab file used to join the domain.
 * `initialize_krb_config`: Boolean. Whether to initialize `krb_config_file` with the contents of `krb_config`.
 * `krb_config`: Hash. Configuration used to initialize `krb_config_file` for performing a keytab join.
-* `selfserve_join` : Boolean. Whether to perform a --selfserve join.  Server must have been precreated.
-* `selfserve_rodc` : String. Name of DC to selfserve join to.  Required if using selfserve_join.
+* `server` : String. Name of DC to join to.  Specify if using a `join_type` of `selfserve`.
 * `zone`: String. Name of the zone in which to place the computer account.
 * `container`: String. LDAP path to the OU container in which to place the computer account.
 * `use_express_license`: Boolean. If true, set the adlicense to `express` if licensed features are enabled.
@@ -170,7 +169,6 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 ###Classes
 * centrify::install
 * centrify::config
-* centrify::params
 * centrify::service
 * centrify::join
 * centrify::cron
@@ -181,5 +179,5 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 
 ## Limitations
 
-This module requires Puppet >= 3.4.0 or Puppet Enterprise >= 3.2 due to it's use of the `contain` function.
+This module requires Puppet >= 4.0.0.
 
