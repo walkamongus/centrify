@@ -26,6 +26,7 @@ class centrify (
   Boolean $use_express_license,
   Boolean $install_flush_cronjob,
   Boolean $precreate,
+  Boolean $manage_sshd_config,
   Array $extra_args,
   Hash $krb_config,
   Stdlib::Absolutepath $dc_config_file,
@@ -46,6 +47,9 @@ class centrify (
   Optional[String] $join_password,
   Optional[String] $selfserve_rodc,
   Optional[String] $zone,
+  Optional[String] $sshd_config_template,
+  Optional[String] $sshd_config_source,
+  Optional[Variant[String, Hash, Array]] $sshd_config_content,
   Optional[Stdlib::Absolutepath] $krb_keytab,
   Enum['selfserve', 'password', 'keytab'] $join_type,
 ){
@@ -57,6 +61,9 @@ class centrify (
   }
   if ($initialize_krb_config and empty($krb_config)) {
     fail('Cannot set initialize_krb_config without krb_config')
+  }
+  if ($sshd_config_source and ($sshd_config_content or $sshd_config_template)) {
+    fail('Cannot set sshd_config_source and sshd_config_content or sshd_config_template')
   }
 
   class { '::centrify::install': } ->

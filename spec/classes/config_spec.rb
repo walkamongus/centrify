@@ -21,7 +21,7 @@ describe 'centrify' do
             })
           end
           it do
-            is_expected.to contain_file('centrifydc_sshd_config').with({
+            is_expected.to contain_file('centrifydc_sshd_config').only_with({
               'ensure' => 'file',
               'path'   => '/etc/centrifydc/ssh/sshd_config',
               'owner'  => 'root',
@@ -51,7 +51,7 @@ describe 'centrify' do
             })
           end
 
-          it do 
+          it do
             is_expected.to contain_centrifydc_line('pam.allow.users').with({
               'ensure' => 'present',
               'value'  => 'file:/etc/centrifydc/users.allow'
@@ -74,7 +74,7 @@ describe 'centrify' do
             })
           end
 
-          it do 
+          it do
             is_expected.to contain_centrifydc_line('pam.allow.groups').with({
               'ensure' => 'present',
               'value'  => 'file:/etc/centrifydc/groups.allow'
@@ -97,7 +97,7 @@ describe 'centrify' do
             })
           end
 
-          it do 
+          it do
             is_expected.to contain_centrifydc_line('pam.deny.users').with({
               'ensure' => 'present',
               'value'  => 'file:/etc/centrifydc/users.deny'
@@ -120,7 +120,7 @@ describe 'centrify' do
             })
           end
 
-          it do 
+          it do
             is_expected.to contain_centrifydc_line('pam.deny.groups').with({
               'ensure' => 'present',
               'value'  => 'file:/etc/centrifydc/groups.deny'
@@ -131,6 +131,103 @@ describe 'centrify' do
             is_expected.to contain_file('deny_groups_file').with_content(
               /bad_group1\nbad_group2/
             )
+          end
+        end
+
+        context "centrify::config class with sshd_config_content specified" do
+          let(:params) do
+            {
+              :sshd_config_content => 'centrify_test',
+            }
+          end
+          it do
+            is_expected.to contain_file('centrifydc_sshd_config').with({
+              'ensure'  => 'file',
+              'path'    => '/etc/centrifydc/ssh/sshd_config',
+              'content' => /^centrify_test$/
+            })
+          end
+        end
+
+        context "centrify::config class with sshd_config_template specified" do
+          let(:params) do
+            {
+              :sshd_config_template => 'test/sshd_config.erb',
+            }
+          end
+          it do
+            is_expected.to contain_file('centrifydc_sshd_config').with({
+              'ensure'  => 'file',
+              'path'    => '/etc/centrifydc/ssh/sshd_config',
+              'content' => /^centrify_test$/
+            })
+          end
+        end
+
+        context "centrify::config class with sshd_config_source specified" do
+          let(:params) do
+            {
+              :sshd_config_source => 'puppet:///modules/profile/centrify/sshd_config.erb',
+            }
+          end
+          it do
+            is_expected.to contain_file('centrifydc_sshd_config').with({
+              'ensure'  => 'file',
+              'path'    => '/etc/centrifydc/ssh/sshd_config',
+              'source'  => 'puppet:///modules/profile/centrify/sshd_config.erb',
+            })
+          end
+        end
+
+        context "centrify::config class with manage_sshd_config=false" do
+          let(:params) do
+            {
+              :manage_sshd_config => false,
+            }
+          end
+          it do
+            is_expected.not_to contain_file('centrifydc_sshd_config')
+          end
+        end
+
+        context "centrify::config class with sshd_config_content and sshd_config_template specified" do
+          let(:params) do
+            {
+              :sshd_config_content  => {
+                'TestKey'     => 'TheValue',
+                'AnotherTest' => 'AnotherValue',
+              },
+              :sshd_config_template => 'test/sshd_config_content.erb',
+            }
+          end
+          it do
+            is_expected.to contain_file('centrifydc_sshd_config').with({
+              'content' => /^TestKey TheValue\nAnotherTest AnotherValue$/
+            })
+          end
+        end
+
+        context "centrify::config class with sshd_config_content and sshd_config_source specified" do
+          let(:params) do
+            {
+              :sshd_config_content => 'centrify_test',
+              :sshd_config_source  => 'puppet:///modules/test/sshd_config.erb',
+            }
+          end
+          it do
+            is_expected.to raise_error(Puppet::Error, /Cannot set sshd_config_source and sshd_config_content or sshd_config_template/)
+          end
+        end
+
+        context "centrify::config class with sshd_config_template and sshd_config_source specified" do
+          let(:params) do
+            {
+              :sshd_config_template => 'test/sshd_config.erb',
+              :sshd_config_source   => 'puppet:///modules/test/sshd_config.erb',
+            }
+          end
+          it do
+            is_expected.to raise_error(Puppet::Error, /Cannot set sshd_config_source and sshd_config_content or sshd_config_template/)
           end
         end
       end

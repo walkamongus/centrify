@@ -1,6 +1,9 @@
 .*.sw?
 /pkg
-/spec/fixtures
+/spec/fixtures/**
+!/spec/fixtures/modules/
+!/spec/fixtures/modules/test/
+!/spec/fixtures/modules/test/**
 /.rspec_system
 /.vagrant
 /.bundle
