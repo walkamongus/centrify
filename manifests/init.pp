@@ -44,7 +44,6 @@ class centrify (
   Optional[String] $container,
   Optional[String] $join_user,
   Optional[String] $join_password,
-  Optional[String] $selfserve_rodc,
   Optional[String] $zone,
   Optional[Stdlib::Absolutepath] $krb_keytab,
   Enum['selfserve', 'password', 'keytab'] $join_type,

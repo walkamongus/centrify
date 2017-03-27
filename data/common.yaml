@@ -33,7 +33,6 @@ centrify::domain: ~
 centrify::container: ~
 centrify::join_user: ~
 centrify::join_password: ~
-centrify::selfserve_rodc: ~
 centrify::zone: ~
 centrify::krb_keytab: ~
 centrify::join_type: 'password'
