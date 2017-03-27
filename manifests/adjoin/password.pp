@@ -46,7 +46,7 @@ class centrify::adjoin::password (
     exec { 'adjoin_precreate_with_password':
       path        => '/usr/bin:/usr/sbin:/bin',
       command     => "${_command} -P",
-      environment => "CENTRIFY_JOIN_PASSWORD='${join_password}'",
+      environment => "CENTRIFY_JOIN_PASSWORD=${join_password}",
       unless      => "adinfo -d | grep ${domain}",
       before      => Exec['adjoin_with_password'],
     }
@@ -55,7 +55,7 @@ class centrify::adjoin::password (
   exec { 'adjoin_with_password':
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => $_command,
-    environment => "CENTRIFY_JOIN_PASSWORD='${join_password}'",
+    environment => "CENTRIFY_JOIN_PASSWORD=${join_password}",
     unless      => "adinfo -d | grep ${domain}",
     notify      => Exec['run_adflush_and_adreload'],
   }
