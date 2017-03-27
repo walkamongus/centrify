@@ -33,7 +33,7 @@ class centrify::adjoin::password (
     '-V',
     $_zone_opt,
     "-u '${join_user}'",
-    "-p '${join_password}'",
+    '-p $CENTRIFY_JOIN_PASSWORD',
     $_container_opt,
     $_server_opt,
   ]
@@ -44,18 +44,20 @@ class centrify::adjoin::password (
 
   if $precreate {
     exec { 'adjoin_precreate_with_password':
-      path    => '/usr/bin:/usr/sbin:/bin',
-      command => "${_command} -P",
-      unless  => "adinfo -d | grep ${domain}",
-      before  => Exec['adjoin_with_password'],
+      path        => '/usr/bin:/usr/sbin:/bin',
+      command     => "${_command} -P",
+      environment => "CENTRIFY_JOIN_PASSWORD='${join_password}'",
+      unless      => "adinfo -d | grep ${domain}",
+      before      => Exec['adjoin_with_password'],
     }
   }
 
   exec { 'adjoin_with_password':
-    path    => '/usr/bin:/usr/sbin:/bin',
-    command => $_command,
-    unless  => "adinfo -d | grep ${domain}",
-    notify  => Exec['run_adflush_and_adreload'],
+    path        => '/usr/bin:/usr/sbin:/bin',
+    command     => $_command,
+    environment => "CENTRIFY_JOIN_PASSWORD='${join_password}'",
+    unless      => "adinfo -d | grep ${domain}",
+    notify      => Exec['run_adflush_and_adreload'],
   }
 
   exec { 'run_adflush_and_adreload':
