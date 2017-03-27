@@ -1,0 +1,3 @@
+---
+centrify::dc_package_name: 'CentrifyDC'
+centrify::sshd_package_name: 'CentrifyDC-openssh'
