@@ -22,7 +22,7 @@ describe 'centrify' do
           it do
             is_expected.to contain_exec('adjoin_with_selfserve').with({
               'path'    => '/usr/bin:/usr/sbin:/bin',
-              'command' => "adjoin -V -s 'domainctrlr.example.com' --selfserve 'example.com'",
+              'command' => "adjoin -w -V -s 'domainctrlr.example.com' --selfserve 'example.com'",
               'unless'  => 'adinfo -d | grep example.com',
             })
           end
@@ -44,7 +44,7 @@ describe 'centrify' do
 
             it do
               is_expected.to contain_exec('adjoin_with_selfserve').with({
-                'command' => "adjoin -V -s 'domainctrlr.example.com' --selfserve --name foobar 'example.com'",
+                'command' => "adjoin -w -V -s 'domainctrlr.example.com' --selfserve --name foobar 'example.com'",
               })
             end
           end

@@ -15,6 +15,7 @@ class centrify::adjoin::selfserve (
   }
 
   $_opts = [
+    '-w',
     '-V',
     $_server_opt,
     '--selfserve',
