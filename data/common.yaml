@@ -15,6 +15,7 @@ centrify::initialize_krb_config: false
 centrify::use_express_license: false
 centrify::install_flush_cronjob: false
 centrify::precreate: false
+centrify::manage_sshd_config: true
 centrify::extra_args: []
 centrify::krb_config: {}
 centrify::dc_config_file: '/etc/centrifydc/centrifydc.conf'
@@ -34,5 +35,8 @@ centrify::container: ~
 centrify::join_user: ~
 centrify::join_password: ~
 centrify::zone: ~
+centrify::sshd_config_content: ~
+centrify::sshd_config_template: ~
+centrify::sshd_config_source: ~
 centrify::krb_keytab: ~
 centrify::join_type: 'password'

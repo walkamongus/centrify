@@ -121,7 +121,7 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 
 ## Reference
 
-###Parameters
+### Parameters
 
 * `dc_package_name`: String. Name of the centrifydc package.
 * `sshd_package_name`: String. Name of the centrifydc-openssh package.
@@ -161,12 +161,16 @@ Set up Centrify Express and join an Active Directory domain via a keytab (initia
 * `flush_cronjob_weekday`: String. Cron day of week for flush and reload cronjob.
 * `extra_args`: Array. Array of extra arguments to pass to the `adjoin` command.
 * `precreate`: Boolean. If true, `adjoin` will run to precreate the computer and extension object in AD prior to joining.
+* `manage_sshd_config`: Boolean. Specifies whether the Centrify SSH config (`sshd_config_file`) should be managed. Default is true.
+* `sshd_config_content`: String, Hash, or Array. Contents of the `sshd_config_file`. Mutually exclusive with `sshd_config_source`. `sshd_config_template` takes precedence if it's specified, and this parameter can be referenced within a custom template.
+* `sshd_config_template`: String. Passed to the `template()` function for the value of the `content` parameter for `sshd_config_file` resource when `manage_sshd_config=true`. Mutually exclusive with `sshd_config_source`. Both `sshd_config_content` and `sshd_config_template` can be specified, but the template takes precedence. The `sshd_config_content` parameter can be referenced in a custom template via a local scope variable of the same name.
+* `sshd_config_source`: String. Value for the `source` parameter for the `sshd_config_file` resource when `manage_sshd_config=true`. Mutually exclusive with `sshd_config_content` and `sshd_config_template`
 
 
-###Types
+### Types
 * `centrifydc_line`: Set configuration directives in the centrifydc.conf file.
 
-###Classes
+### Classes
 * centrify::install
 * centrify::config
 * centrify::service

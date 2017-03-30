@@ -7,6 +7,12 @@ class centrify::config {
   $_allow_groups        = $::centrify::allow_groups
   $_deny_users          = $::centrify::deny_users
   $_deny_groups         = $::centrify::deny_groups
+  $sshd_config_content  = $::centrify::sshd_config_content
+
+  $_sshd_config_content_param = $::centrify::sshd_config_template ? {
+    undef   => $::centrify::sshd_config_content,
+    default => template($::centrify::sshd_config_template),
+  }
 
   file { 'centrifydc_config':
     ensure => file,
@@ -16,12 +22,16 @@ class centrify::config {
     mode   => '0644',
   }
 
-  file { 'centrifydc_sshd_config':
-    ensure => $::centrify::sshd_config_ensure,
-    path   => $::centrify::sshd_config_file,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0600',
+  if $::centrify::manage_sshd_config {
+    file { 'centrifydc_sshd_config':
+      ensure  => $::centrify::sshd_config_ensure,
+      path    => $::centrify::sshd_config_file,
+      content => $_sshd_config_content_param,
+      source  => $::centrify::sshd_config_source,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
+    }
   }
 
   if $_allow_users {
