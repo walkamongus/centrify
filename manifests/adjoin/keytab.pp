@@ -69,18 +69,19 @@ class centrify::adjoin::keytab (
   $_join_opts = delete(concat($_opts, $extra_args), '')
   $_options   = join($_join_opts, ' ')
   $_command   = "adjoin ${_options} '${domain}'"
+  $_is_joined = "adinfo -d | grep ${domain.downcase()}"
 
   exec { 'run_kinit_with_keytab':
     path    => '/usr/share/centrifydc/kerberos/bin:/usr/bin:/usr/sbin:/bin',
     command => "kinit -kt ${krb_keytab} ${join_user}",
-    unless  => "adinfo -d | grep ${domain}",
+    unless  => $_is_joined,
   }
 
   if $precreate {
     exec { 'run_adjoin_precreate_with_keytab':
       path    => '/usr/bin:/usr/sbin:/bin',
       command => "${_command} -P",
-      unless  => "adinfo -d | grep ${domain}",
+      unless  => $_is_joined,
       require => Exec['run_kinit_with_keytab'],
       before  => Exec['run_adjoin_with_keytab'],
     }
@@ -89,7 +90,7 @@ class centrify::adjoin::keytab (
   exec { 'run_adjoin_with_keytab':
     path    => '/usr/bin:/usr/sbin:/bin',
     command => $_command,
-    unless  => "adinfo -d | grep ${domain}",
+    unless  => $_is_joined,
     require => Exec['run_kinit_with_keytab'],
     notify  => Exec['run_adflush_and_adreload'],
   }

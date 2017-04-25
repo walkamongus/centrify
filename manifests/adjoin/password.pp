@@ -41,13 +41,14 @@ class centrify::adjoin::password (
   $_join_opts = delete(concat($_opts, $extra_args), '')
   $_options   = join($_join_opts, ' ')
   $_command   = "adjoin ${_options} '${domain}'"
+  $_is_joined = "adinfo -d | grep ${domain.downcase()}"
 
   if $precreate {
     exec { 'adjoin_precreate_with_password':
       path        => '/usr/bin:/usr/sbin:/bin',
       command     => "${_command} -P",
       environment => "CENTRIFY_JOIN_PASSWORD=${join_password}",
-      unless      => "adinfo -d | grep ${domain}",
+      unless      => $_is_joined,
       before      => Exec['adjoin_with_password'],
     }
   }
@@ -56,7 +57,7 @@ class centrify::adjoin::password (
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => $_command,
     environment => "CENTRIFY_JOIN_PASSWORD=${join_password}",
-    unless      => "adinfo -d | grep ${domain}",
+    unless      => $_is_joined,
     notify      => Exec['run_adflush_and_adreload'],
   }
 
