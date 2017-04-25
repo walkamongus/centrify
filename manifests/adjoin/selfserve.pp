@@ -24,11 +24,12 @@ class centrify::adjoin::selfserve (
   $_join_opts = delete(concat($_opts, $extra_args), '')
   $_options   = join($_join_opts, ' ')
   $_command   = "adjoin ${_options} '${domain}'"
+  $_is_joined = "adinfo -d | grep ${domain.downcase()}"
 
   exec { 'adjoin_with_selfserve':
     path    => '/usr/bin:/usr/sbin:/bin',
     command => $_command,
-    unless  => "adinfo -d | grep ${domain}",
+    unless  => $_is_joined,
     notify  => Exec['run_adflush_and_adreload'],
   }
 
